@@ -47,5 +47,6 @@ describe Thing do
     expect(thing.available_property_keys.length).to eq(1)
     expect(thing.available_property_keys.first).to eq("orbital_parameters_semi_major_axis")
     expect(thing.available_properties.first['name']).to eq("Semi-Major Axis")
+    expect(thing.property_values.first).to eq("1.0")
   end
 end
