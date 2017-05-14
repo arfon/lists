@@ -4,6 +4,8 @@ FactoryGirl.define do
     name  'My great list of exoplanets'
     description 'Only the finest exoplanet candidates'
 
+    properties {}
+
     created_at  { Time.now }
     updated_at  { Time.now }
 
