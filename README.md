@@ -24,4 +24,5 @@ Once you've made a list you you can
 
 ### API
 
+---------------------------------------
 <sup>\*</sup>Formerly known as Listicles
