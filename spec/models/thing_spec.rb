@@ -49,4 +49,14 @@ describe Thing do
     expect(thing.available_properties.first['name']).to eq("Semi-Major Axis")
     expect(thing.property_values.first).to eq("1.0")
   end
+
+  it "should be impossible to create a Thing with invalid properties" do
+    list = create(:list)
+
+    thing_properties = {
+      "foo" => "bar"
+    }
+
+    expect { create(:thing, :properties => thing_properties, :list => list) }.to raise_error(ActiveRecord::RecordInvalid)
+  end
 end
