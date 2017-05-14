@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 20170514024307) do
     t.text "description"
     t.hstore "properties"
     t.integer "user_id"
+    t.boolean "visible", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -43,7 +44,7 @@ ActiveRecord::Schema.define(version: 20170514024307) do
     t.string "email"
     t.string "sha"
     t.hstore "extra"
-    t.boolean "admin", default: false
+    t.boolean "admin", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

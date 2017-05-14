@@ -1,6 +1,8 @@
 class User < ApplicationRecord
   before_create :set_sha
   has_many :lists
+  has_many :public_lists, -> { List.visible }, :class_name => "List"
+  has_many :private_lists, -> { List.hidden }, :class_name => "List"
 
   def self.from_omniauth(auth)
     where(:provider => auth.provider, :uid => auth.uid).first_or_create do |user|

@@ -9,7 +9,7 @@ class CreateUsers < ActiveRecord::Migration[5.1]
       t.string      :email
       t.string      :sha
       t.hstore      :extra
-      t.boolean     :admin, :default => false
+      t.boolean     :admin, :default => false, :null => false
       t.timestamps  :null => false
     end
   end
