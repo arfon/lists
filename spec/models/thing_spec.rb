@@ -15,4 +15,20 @@ describe Thing do
 
     expect(thing.sha).to eq(thing.to_param)
   end
+
+  it "should know what the available property keys are" do
+    list = create(:list_without_properties)
+    property = {
+      "name" => "Semi-Major Axis",
+      "units" => "au",
+      "kind" => "Decimal",
+      "required" => false,
+      "group" => "Orbital Parameters"
+    }
+    list.add_property!(property)
+
+    thing = create(:thing, :list => list)
+    expect(thing.available_property_keys.length).to eq(1)
+    expect(thing.available_property_keys.first).to eq("orbital_parameters_semi_major_axis")
+  end
 end

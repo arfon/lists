@@ -1,6 +1,7 @@
 class Thing < ApplicationRecord
   belongs_to :list
-  before_create :set_sha, :validate_properties
+  before_create :set_sha
+  validate :property_checks
 
   def to_param
     sha
@@ -14,25 +15,25 @@ class Thing < ApplicationRecord
     properties.values
   end
 
-private
-
   # Things inherit their properties from their parent List
   #
   # Returns hash of properties
   def available_properties
-    self.list.properties
+    @properties ||= list.properties
   end
 
   def available_property_keys
-    self.list.properties.map
+    @keys ||= list.properties.map { |property| property['key']}
   end
+
+private
 
   # TODO: Check that the properties we're trying to assign for each Thing are a
   # subset of the list-level properties defined.
   #
   # Returns a boolean
-  def validate_properties
-    true 
+  def property_checks
+    true
   end
 
   def set_sha
