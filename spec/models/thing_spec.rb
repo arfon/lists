@@ -38,7 +38,12 @@ describe Thing do
 
     list.add_property!(property)
 
-    thing = create(:thing, :list => list)
+    thing_properties = {
+      "orbital_parameters_semi_major_axis" => "1.0"
+    }
+
+    thing = create(:thing, :properties => thing_properties, :list => list)
+
     expect(thing.available_property_keys.length).to eq(1)
     expect(thing.available_property_keys.first).to eq("orbital_parameters_semi_major_axis")
     expect(thing.available_properties.first['name']).to eq("Semi-Major Axis")

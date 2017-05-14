@@ -33,6 +33,11 @@ private
   #
   def property_checks
     errors.add(:base, "You can't have a Thing without properties") if property_keys.empty?
+
+    # byebug
+    self.property_keys.each do |key|
+      errors.add(:properties, "'#{key}' is an invalid property for this List") unless available_property_keys.include?(key)
+    end
   end
 
   def set_sha
