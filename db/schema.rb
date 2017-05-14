@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 20170514024307) do
     t.string "name"
     t.string "sha"
     t.text "description"
+    t.string "doi"
     t.jsonb "properties"
     t.integer "user_id"
     t.boolean "visible", default: false, null: false
@@ -28,7 +29,7 @@ ActiveRecord::Schema.define(version: 20170514024307) do
   end
 
   create_table "things", force: :cascade do |t|
-    t.jsonb "properties"
+    t.hstore "properties"
     t.string "sha"
     t.integer "list_id"
     t.datetime "created_at", null: false

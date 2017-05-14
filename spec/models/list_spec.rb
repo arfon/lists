@@ -38,4 +38,56 @@ describe List do
     expect(List.visible.count).to eq(3)
     expect(List.hidden.count).to eq(15)
   end
+
+  # Properties
+
+  it "should know about it's properties" do
+    list = create(:list)
+
+    expect(list.properties.length).to eq(5)
+    expect(list.property_groups.length).to eq(3)
+    expect(list.property_groups).to contain_exactly("Default", "Orbital Parameters", "Stellar Properties")
+  end
+
+  it "should know how to create property keys before saving its properties" do
+    list = create(:list_without_properties)
+    new_property = {
+      "name" => "Semi-Major Axis",
+      "units" => "au",
+      "kind" => "Decimal",
+      "required" => false,
+      "group" => "Orbital Parameters"
+    }
+
+    list.add_property!(new_property)
+    list.save
+
+    expect(list.reload.properties.length).to eq(1)
+    expect(list.reload.properties.first['key']).to eq("orbital_parameters_semi_major_axis")
+  end
+
+  it "should validated properties before adding them" do
+    list = create(:list_without_properties)
+    valid_property = {
+      "name" => "Semi-Major Axis",
+      "units" => "au",
+      "kind" => "Decimal",
+      "required" => false,
+      "group" => "Orbital Parameters"
+    }
+
+    # Missing a 'name' field
+    invalid_property = {
+      "units" => "",
+      "kind" => "String",
+      "required" => true,
+      "group" => "Stellar Properties"
+    }
+
+    list.add_property!(valid_property)
+    list.add_property!(invalid_property)
+
+    expect(list.reload.properties.length).to eq(1)
+    expect(list.reload.properties.first['key']).to eq("orbital_parameters_semi_major_axis")
+  end
 end
