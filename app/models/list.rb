@@ -44,7 +44,6 @@ private
   # example, we might want to limit the number of properties a user can define
   # for a list
   #
-  # Returns a boolean
   def property_checks
     return unless properties
     properties.each do |property|

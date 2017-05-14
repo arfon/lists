@@ -8,16 +8,16 @@ class Thing < ApplicationRecord
   end
 
   def property_keys
-    properties.keys
+    @property_keys ||= properties.nil? ? [] : properties.keys
   end
 
   def property_values
-    properties.values
+    @property_values ||= properties.nil? ? [] : properties.values
   end
 
   # Things inherit their properties from their parent List
   #
-  # Returns hash of properties
+  # Returns array of properties
   def available_properties
     @properties ||= list.properties
   end
@@ -31,9 +31,8 @@ private
   # TODO: Check that the properties we're trying to assign for each Thing are a
   # subset of the list-level properties defined.
   #
-  # Returns a boolean
   def property_checks
-    true
+
   end
 
   def set_sha
