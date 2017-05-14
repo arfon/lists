@@ -8,14 +8,22 @@ describe Thing do
 
     assert !thing.sha.nil?
     expect(thing.sha.length).to eq(32)
-    expect(thing.property_keys).to be_empty
-    expect(thing.property_values).to be_empty
+    expect(thing.available_property_keys.length).to eq(5)
+    expect(thing.property_values).to contain_exactly("1.5", "Kepler-181 b")
   end
 
   it "should know how to parameterize itself properly" do
     thing = create(:thing)
 
     expect(thing.sha).to eq(thing.to_param)
+  end
+
+  it "should be impossible to create a Thing without properties" do
+    thing = build(:thing, :properties => {})
+    thing.save
+
+    assert !thing.persisted?
+    expect(thing.errors.size).to eq(1)
   end
 
   it "should know what the available properties are" do
@@ -27,6 +35,7 @@ describe Thing do
       "required" => false,
       "group" => "Orbital Parameters"
     }
+
     list.add_property!(property)
 
     thing = create(:thing, :list => list)

@@ -32,7 +32,7 @@ private
   # subset of the list-level properties defined.
   #
   def property_checks
-
+    errors.add(:base, "You can't have a Thing without properties") if property_keys.empty?
   end
 
   def set_sha
