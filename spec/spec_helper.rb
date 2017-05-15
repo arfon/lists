@@ -95,3 +95,7 @@ RSpec.configure do |config|
   Kernel.srand config.seed
 =end
 end
+
+def hash_from_json(json)
+  return JSON.parse(json)
+end

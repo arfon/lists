@@ -2,6 +2,7 @@ require 'rails_helper'
 
 describe List do
   it { should belong_to(:user) }
+  it { should have_many(:things) }
 
   it "should initialize properly" do
     list = create(:list)

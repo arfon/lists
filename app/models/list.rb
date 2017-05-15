@@ -1,5 +1,6 @@
 class List < ApplicationRecord
   belongs_to :user
+  has_many :things
   before_create :set_sha
   before_save :set_property_keys
   validate :property_checks
@@ -10,6 +11,7 @@ class List < ApplicationRecord
     group
   }.freeze
 
+  default_scope  { order(:created_at => :desc) }
   scope :visible, -> { where(:visible => true) }
   scope :hidden, -> { where(:visible => false) }
 
