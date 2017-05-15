@@ -8,11 +8,11 @@ class Thing < ApplicationRecord
   end
 
   def property_keys
-    @property_keys ||= properties.nil? ? [] : properties.keys
+    @property_keys ||= properties.nil? ? [] : properties.collect { |p| p['property_key']}
   end
 
   def property_values
-    @property_values ||= properties.nil? ? [] : properties.values
+    @property_values ||= properties.nil? ? [] : properties.collect { |p| p['property_value']}
   end
 
   # Things inherit their properties from their parent List
@@ -34,7 +34,6 @@ private
   def property_checks
     errors.add(:base, "You can't have a Thing without properties") if property_keys.empty?
 
-    # byebug
     self.property_keys.each do |key|
       errors.add(:properties, "'#{key}' is an invalid property for this List") unless available_property_keys.include?(key)
     end
