@@ -29,7 +29,8 @@ class Thing < ApplicationRecord
 private
 
   # TODO: Check that the properties we're trying to assign for each Thing are a
-  # subset of the list-level properties defined.
+  # subset of the list-level properties defined. All Thing properties can have
+  # an 'origin' field.
   #
   def property_checks
     errors.add(:base, "You can't have a Thing without properties") if property_keys.empty?

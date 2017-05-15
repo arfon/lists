@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
-  resources :lists
-
+  scope '/api/v1' do
+    resources :lists, :only => [:index, :show] do
+      resources :things, :only => [:index, :show]
+    end
+  end
 
   get '/auth/:provider/callback', :to => 'sessions#create'
   get '/profile', :to => 'home#profile', :as => 'profile'
