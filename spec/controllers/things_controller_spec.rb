@@ -14,6 +14,7 @@ describe ThingsController, :type => :controller do
 
       expect(response).to be_success
       expect(response.status).to eq(200)
+
       assert_equal hash_from_json(response.body)["data"].first["id"], list.things.first.sha
     end
   end
@@ -28,6 +29,20 @@ describe ThingsController, :type => :controller do
       expect(response).to be_success
       expect(response.status).to eq(200)
       assert_equal hash_from_json(response.body)["data"]["id"], thing.sha
+    end
+  end
+
+  # Private lists
+  describe "GET #index with JSON" do
+    it "should respond with 403 (forbidden) for public users" do
+      list = create(:list, :visible => false)
+      2.times do
+        create(:thing, :list => list)
+      end
+
+      get :index, :params => { :list_id => list.to_param }, :format => :json
+
+      expect(response.status).to eq(403)
     end
   end
 end

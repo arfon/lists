@@ -40,6 +40,14 @@ class List < ApplicationRecord
     properties.map { |property| property['name'] }.uniq
   end
 
+  def owner
+    user
+  end
+
+  def hidden?
+    !visible?
+  end
+
 private
 
   # TODO: Do whatever sanity checks we want to on the list properties here. For

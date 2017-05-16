@@ -3,6 +3,12 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery :with => :exception
 
+  include Pundit
+
+  rescue_from Pundit::NotAuthorizedError do |exception|
+    head :forbidden
+  end
+
   def require_user
     unless current_user
       # Make sure we get redirected back to the page we were asking for.

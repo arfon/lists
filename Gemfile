@@ -41,6 +41,7 @@ gem 'jbuilder', '~> 2.5'
 
 gem 'active_model_serializers', '~> 0.10.0'
 gem 'omniauth-orcid'
+gem 'pundit'
 gem 'will_paginate', '~> 3.1.0'
 
 group :development, :test do
