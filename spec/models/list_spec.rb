@@ -40,6 +40,23 @@ describe List do
     expect(List.hidden.count).to eq(15)
   end
 
+  it "should know what Lists are visible to particular users" do
+    owner = create(:user)
+    user = create(:user)
+
+    3.times do
+      create(:public_list)
+    end
+
+    2.times do
+      create(:private_list, :user => owner)
+    end
+
+    expect(List.all.count).to eq(5)
+    expect(List.visible_to_user(owner).count).to eq(5)
+    expect(List.visible_to_user(user).count).to eq(3)
+  end
+
   # Properties
 
   it "should know about it's properties" do

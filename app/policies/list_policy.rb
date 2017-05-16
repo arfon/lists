@@ -1,4 +1,21 @@
 class ListPolicy
+  class Scope
+    attr_reader :user, :scope
+
+    def initialize(user, scope)
+      @user  = user
+      @scope = scope
+    end
+
+    def resolve
+      if user.admin?
+        scope.all
+      else
+        scope.visible_to_user(user)
+      end
+    end
+  end
+
   attr_reader :user, :list
 
   def initialize(user, list)

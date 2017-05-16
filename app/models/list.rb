@@ -14,7 +14,8 @@ class List < ApplicationRecord
   default_scope  { order(:created_at => :desc) }
   scope :visible, -> { where(:visible => true) }
   scope :hidden, -> { where(:visible => false) }
-
+  scope :visible_to_user, ->(user) { where(:user_id => user.id).or(visible) }
+  
   # Add a new propery to the List properties array
   # Attempts to save the list (triggering validations on required fields)
   def add_property!(property)
