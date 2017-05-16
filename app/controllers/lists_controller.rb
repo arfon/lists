@@ -10,7 +10,7 @@ class ListsController < ApplicationController
   def show
     @list = List.find_by_sha(params[:id])
 
-    authorize @list, :show
+    authorize @list
 
     respond_to do |format|
       format.json { render :json => @list }

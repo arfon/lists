@@ -6,7 +6,7 @@ class ListPolicy
     @list = list
   end
 
-  def show
+  def show?
     # Everyone can see a list if it's marked as 'visible'
     return true if list.visible?
 
