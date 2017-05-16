@@ -8,7 +8,9 @@ class ListPolicy
     end
 
     def resolve
-      if user.admin?
+      if user.nil?
+        scope.visible
+      elsif user.admin?
         scope.all
       else
         scope.visible_to_user(user)

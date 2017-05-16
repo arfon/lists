@@ -1,6 +1,6 @@
 class ListsController < ApplicationController
   def index
-    @lists = List.visible.paginate(:page => params[:page])
+    @lists = policy_scope(List).paginate(:page => params[:page])
 
     respond_to do |format|
       format.json { render :json => @lists }
