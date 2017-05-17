@@ -1,6 +1,6 @@
 class List < ApplicationRecord
   belongs_to :user
-  has_many :things
+  has_many :things, dependent: :destroy 
   before_create :set_sha
   before_save :set_property_keys
   validate :property_checks
