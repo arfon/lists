@@ -20,7 +20,43 @@ How do we do this?
 
 ### Adding things to your list
 
-Once you've made a list you you can
+Once you've made a list you you can import it from the command line with the following three tasks:
+
+```
+thor lists:clone   # Clone the target list source repository
+thor lists:verify  # Verify target repository has correct basic structure
+thor lists:load    # Load the target repository into the database
+```
+
+`thor lists:clone`
+
+> N.B. Only public Git repositories are currently supported.
+
+Clones the target repository to `tmp/repository_name`:
+
+```
+> thor lists:clone git@github.com:arfon/exoplanet_list.git
+```
+
+`thor lists:verify`
+
+Verify the list repository has the correct basic structure:
+
+```
+> thor lists:verify /Users/arfon/stsci/lists/tmp/exoplanet_list
+```
+
+`thor lists:load`
+
+Load the local repository into the local database. By default doesn't save records, use `--save=true` to write to the database:
+
+```
+# Doesn't save to the DB
+> thor lists:load /Users/arfon/stsci/lists/tmp/exoplanet_list
+
+# Save to DB
+> thor lists:load /Users/arfon/stsci/lists/tmp/exoplanet_list --save=true
+```
 
 ### API
 
