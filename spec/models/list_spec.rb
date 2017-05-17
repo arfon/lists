@@ -84,6 +84,24 @@ describe List do
     expect(list.reload.properties.first['key']).to eq("orbital_parameters_semi_major_axis")
   end
 
+  it "should not override a property key if the user has already set it" do
+    list = create(:list_without_properties)
+    new_property = {
+      "name" => "Semi-Major Axis",
+      "units" => "au",
+      "kind" => "Decimal",
+      "required" => false,
+      "group" => "Orbital Parameters",
+      "key" => "foo_bar_baz"
+    }
+
+    list.add_property!(new_property)
+    list.save
+
+    expect(list.reload.properties.length).to eq(1)
+    expect(list.reload.properties.first['key']).to eq("foo_bar_baz")
+  end
+
   it "should validated properties before adding them" do
     list = create(:list_without_properties)
     valid_property = {

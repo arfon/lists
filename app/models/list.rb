@@ -15,7 +15,7 @@ class List < ApplicationRecord
   scope :visible, -> { where(:visible => true) }
   scope :hidden, -> { where(:visible => false) }
   scope :visible_to_user, ->(user) { where(:user_id => user.id).or(visible) }
-  
+
   # Add a new propery to the List properties array
   # Attempts to save the list (triggering validations on required fields)
   def add_property!(property)
@@ -69,6 +69,7 @@ private
   def set_property_keys
     return unless properties
     properties.each do |property|
+      next if property['key'] # don't set the key if it already exists
       property['key'] = "#{property['group']} #{property['name']}".underscore.parameterize(separator: "_")
     end
   end
