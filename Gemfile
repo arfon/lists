@@ -40,8 +40,10 @@ gem 'jbuilder', '~> 2.5'
 # gem 'capistrano-rails', group: :development
 
 gem 'active_model_serializers', '~> 0.10.0'
+gem 'git'
 gem 'omniauth-orcid'
 gem 'pundit'
+gem 'thor'
 gem 'will_paginate', '~> 3.1.0'
 
 group :development, :test do
