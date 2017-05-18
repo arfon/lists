@@ -1,0 +1,20 @@
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>#</th>
+      <% @list.properties.each do |list_property| %>
+      <th><%= list_property['name'] %><%= property_units(list_property) %></th>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
+    <% @list.things.each_with_index do |list_thing, index| %>
+    <tr>
+      <th scope="row"><%= index + 1 %></th>
+      <% @list.properties.each do |list_property |%>
+      <td><%= list_thing.property_value_for(list_property['key']) %></td>
+      <% end %>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

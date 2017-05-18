@@ -1,0 +1,4 @@
+<div class="list">
+  <span class="list-name"><%= link_to list.name, list_path(list) %></span><%= private_tag(list)%>
+  <p><%= list.description %> &middot; Curated by <%= link_to list.user.name, user_path(list.user) %></p>
+</div>

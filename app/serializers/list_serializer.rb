@@ -5,8 +5,8 @@ class ListSerializer < ActiveModel::Serializer
     object.sha
   end
 
-  link(:self)   { list_path(object.sha) }
-  link(:things) { list_things_path(object.sha) }
+  link(:self)   { api_list_path(object.sha) }
+  link(:things) { api_list_things_path(object.sha) }
 
   has_many :things
 end

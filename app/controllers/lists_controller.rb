@@ -3,6 +3,7 @@ class ListsController < ApplicationController
     @lists = policy_scope(List).paginate(:page => params[:page])
 
     respond_to do |format|
+      format.html
       format.json { render :json => @lists }
     end
   end
@@ -13,6 +14,7 @@ class ListsController < ApplicationController
     authorize @list
 
     respond_to do |format|
+      format.html 
       format.json { render :json => @list }
     end
   end

@@ -6,15 +6,13 @@ This is Lists<sup>\*</sup>, a really simple service for creating and maintaining
 
 First visit [`http://list.mast.stsci.edu`](http://list.mast.stsci.edu) to get started - you'll need an ORCID account to sign in.
 
-## Configuration
-
 ## About Lists
 
-A `List` belongs to an individuals. Lists need _at a minimum_ a name, and a short description. Lists can be public or private.
+A `List` belongs to an individual. Lists need _at a minimum_ a name, and a short description. Lists can be public or private.
 
 Each `List` is composed of multiple (currently limited to 10,000) `Things`. Each `Thing` has custom user-defined properties.
 
-## Creating a list
+### Creating a list
 
 To create a List you first need to create a Git repository with the metadata that defines the list properties and the Things you want to include in your List. An example of a list for exoplanets is here: https://github.com/arfon/exoplanet_list
 

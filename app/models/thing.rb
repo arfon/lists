@@ -7,6 +7,14 @@ class Thing < ApplicationRecord
     sha
   end
 
+  def property_value_for(list_property_key)
+    if property = properties.select { |p| p['property_key'] == list_property_key }
+      return property.first['property_value']
+    else
+      return ""
+    end
+  end
+
   def property_keys
     @property_keys ||= properties.nil? ? [] : properties.collect { |p| p['property_key']}
   end
