@@ -3,6 +3,7 @@ require 'rails_helper'
 describe ListsController, :type => :controller do
   render_views
 
+  ## API
   describe "GET #index with JSON" do
     it "should respond with a JSON array" do
       list = create(:list, :visible => true)
@@ -39,6 +40,21 @@ describe ListsController, :type => :controller do
 
       get :show, :params => { :id => list.to_param }, :format => :json
       expect(response).to be_success
+    end
+  end
+
+  ## HTML
+  describe "GET #index" do
+    it "doesn't show hidden lists" do
+      create(:list, :visible => true, :name => "List 1")
+      create(:list, :visible => false, :name => "List 2")
+      create(:list, :visible => true, :name => "List 3")
+
+      get :index
+
+      expect(response.body).to match /List 1/im
+      expect(response.body).to match /List 3/im
+      expect(response.body).not_to match /List 2/im
     end
   end
 end
