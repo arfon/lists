@@ -57,4 +57,18 @@ describe ListsController, :type => :controller do
       expect(response.body).not_to match /List 2/im
     end
   end
+
+  ## With logged in user
+  describe "GET #new" do
+    it "LOGGED IN responds with a redirect" do
+      user = create(:user)
+      allow(controller).to receive_message_chain(:current_user).and_return(user)
+      list = create(:list, :name => "Funky list", :visible => false, :user => user)
+
+      get :index, :format => :html
+      expect(response).to be_success
+      expect(response.body).to match /Funky List/im
+      expect(response.body).to match /Private/im
+    end
+  end
 end
