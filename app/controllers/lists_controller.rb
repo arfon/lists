@@ -14,8 +14,9 @@ class ListsController < ApplicationController
     authorize @list
 
     respond_to do |format|
-      format.html 
+      format.html
       format.json { render :json => @list }
+      format.csv { send_data @list.to_csv }
     end
   end
 end

@@ -1,6 +1,6 @@
 class List < ApplicationRecord
   belongs_to :user
-  has_many :things, dependent: :destroy 
+  has_many :things, dependent: :destroy
   before_create :set_sha
   before_save :set_property_keys
   validate :property_checks
@@ -29,6 +29,21 @@ class List < ApplicationRecord
     true
   end
 
+  # default_name,default_star_name,orbital_parameters_planet_mass,default_ra,default_dec
+  def to_csv
+    CSV.generate do |csv|
+      csv << property_index_keys
+      things.each do |thing|
+        vals = []
+        property_index_keys.each do |key|
+          vals << thing.property_value_for(key)
+        end
+
+        csv << vals
+      end
+    end
+  end
+
   def to_param
     sha
   end
@@ -39,6 +54,10 @@ class List < ApplicationRecord
 
   def property_keys
     properties.map { |property| property['name'] }.uniq
+  end
+
+  def property_index_keys
+    properties.map { |property| property['key'] }.uniq
   end
 
   def owner

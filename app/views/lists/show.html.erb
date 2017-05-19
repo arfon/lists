@@ -1,10 +1,9 @@
 <div class="container medium-top">
   <h1><%= @list.name %></h1>
   <div class="list-meta">
-    <p>Curated by <%= link_to @list.user.name, user_path(@list.user) %> &middot; Contains <%= pluralize(@list.things.size, 'thing') %> &middot; <%= private_tag(@list)%></p>
+    <p>Curated by <%= link_to @list.user.name, user_path(@list.user) %> &middot; Contains <%= pluralize(@list.things.size, 'thing') %> &middot; <%= link_to "Download CSV &rarr;".html_safe, list_path(@list, :format => :csv) %> &middot; <%= private_tag(@list)%></p>
   </div>
   <p class="lead"><%= @list.description %> Ball tip tri-tip pancetta meatball turducken shankle boudin alcatra venison. Hamburger picanha pancetta, turducken cow bacon pig spare ribs shoulder cupim meatball pork loin burgdoggen ball tip. Bacon salami fatback, meatball doner shankle sirloin ham hock chuck cupim beef ribs venison picanha tenderloin. Jowl bacon picanha, meatball beef pastrami landjaeger frankfurter swine shank short loin kielbasa shankle pig rump. Pork belly meatloaf biltong bacon kevin, kielbasa ham ground round sirloin pastrami tri-tip pancetta doner. Pork ball tip turducken pork loin sirloin.</p>
 
   <%= render :partial => "list_table", :list => @list %>
-
 </div>
