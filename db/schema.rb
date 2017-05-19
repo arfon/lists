@@ -26,6 +26,10 @@ ActiveRecord::Schema.define(version: 20170514024307) do
     t.boolean "visible", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["doi"], name: "index_lists_on_doi", unique: true
+    t.index ["properties"], name: "index_lists_on_properties", using: :gin
+    t.index ["sha"], name: "index_lists_on_sha", unique: true
+    t.index ["user_id"], name: "index_lists_on_user_id"
   end
 
   create_table "things", force: :cascade do |t|
@@ -34,6 +38,9 @@ ActiveRecord::Schema.define(version: 20170514024307) do
     t.integer "list_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["list_id"], name: "index_things_on_list_id"
+    t.index ["properties"], name: "index_things_on_properties", using: :gin
+    t.index ["sha"], name: "index_things_on_sha", unique: true
   end
 
   create_table "users", force: :cascade do |t|
