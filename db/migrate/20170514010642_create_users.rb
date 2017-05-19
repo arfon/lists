@@ -12,5 +12,7 @@ class CreateUsers < ActiveRecord::Migration[5.1]
       t.boolean     :admin, :default => false, :null => false
       t.timestamps  :null => false
     end
+
+    add_index :users, :sha
   end
 end

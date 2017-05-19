@@ -55,6 +55,7 @@ ActiveRecord::Schema.define(version: 20170514024307) do
     t.boolean "admin", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["sha"], name: "index_users_on_sha"
   end
 
 end
