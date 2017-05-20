@@ -91,7 +91,8 @@ class Lists < Thor
       things.each do |source_thing|
         thing_name = File.basename(source_thing)
         thing_yaml = YAML.load_file("#{source_thing}")
-        thing = Thing.new(:list => list, :properties => thing_yaml['properties'])
+        # byebug
+        thing = Thing.new(:list => list, :properties => thing_yaml)
         if thing.valid?
           puts "#{thing_name} appears to be a valid Thing"
           thing.save
