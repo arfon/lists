@@ -19,4 +19,6 @@ class ListsController < ApplicationController
       format.csv { send_data @list.to_csv }
     end
   end
+
+  private
 end

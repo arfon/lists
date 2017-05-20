@@ -9,6 +9,8 @@ Rails.application.routes.draw do
     resources :lists, :only => [:index, :show] do
       resources :things, :only => [:index, :show]
     end
+
+    resources :users, :only => [:show]
   end
 
   resources :users, :only => [:show]
