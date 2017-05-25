@@ -52,6 +52,8 @@ describe Thing do
     expect(thing.available_properties.first['name']).to eq("Semi-Major Axis")
     expect(thing.property_values.first).to eq("1.0")
     expect(thing.properties['orbital_parameters_semi_major_axis']['origin']).to eq("http://arxiv.org/abs/1402.6534")
+    expect(thing.property_value_for("orbital_parameters_semi_major_axis")).to eq("1.0")
+    expect(thing.origin_url_for("orbital_parameters_semi_major_axis")).to eq("http://arxiv.org/abs/1402.6534")
   end
 
   it "should be impossible to create a Thing with invalid properties" do
