@@ -106,22 +106,22 @@ Things should be nested in the List repository in a folder named `things`. Each 
 ```
 # Example for `things/kepler-181-b.yaml`
 
-properties:
-  - property_key : "default_name"
-    property_value: "Kepler-181 b"
-    property_origin: "http://arxiv.org/abs/1402.6534"
-  - property_key : "default_star_name"
-    property_value: "Kepler-181"
-    property_origin: ""
-  - property_key : "orbital_parameters_planet_mass"
-    property_value: "0.0067"
-    property_origin: "http://arxiv.org/abs/1402.6534"
-  - property_key : "default_ra"
-    property_value: "286.0166667"
-    property_origin: "http://arxiv.org/abs/1402.6534"
-  - property_key : "default_dec"
-    property_value: "50.0958333"
-    property_origin: "http://arxiv.org/abs/1402.6534"
+default_name:
+  value: "Kepler-181 b"
+  origin: "http://arxiv.org/abs/1402.6534"
+default_star_name:
+  value: "Kepler-181"
+  origin: ""
+orbital_parameters_planet_mass:
+  value: "0.0067"
+  origin: "http://arxiv.org/abs/1402.6534"
+default_ra:
+  value: "286.0166667"
+  origin: "http://arxiv.org/abs/1402.6534"
+default_dec:
+  value: "50.0958333"
+  origin: "http://arxiv.org/abs/1402.6534"
+
 ```
 
 Note that we only need to define two key/value pairs here, `property_key` and `property_value`. These `property_key` fields are matched against the properties defined in `list.yaml` when presenting them.
@@ -200,7 +200,6 @@ A list's Things: https://list.mast.stsci.edu/api/v1/lists/:list_id/things
 Filtering a List's Things: https://list.mast.stsci.edu/api/v1/lists/:list_id/things/filter?query=param
 A single List Thing: https://list.mast.stsci.edu/api/v1/lists/:list_id/things/:thing_id
 
-All Users: https://list.mast.stsci.edu/api/v1/users
 A User's public lists: https://list.mast.stsci.edu/api/v1/users/:user_id/lists
 ```
 
@@ -211,7 +210,8 @@ For more in-depth documentation read on...
 The 30 most recent visible `Lists` are available at:
 
 ```
-curl -v -H "Accept: application/json" https://list.mast.stsci.edu/api/v1/lists
+curl -v -H "Accept: application/json" \
+https://list.mast.stsci.edu/api/v1/lists
 ```
 
 ```
@@ -320,7 +320,8 @@ https://list.mast.stsci.edu/api/v1/lists/:list_id
 ```
 
 ```
-curl -v -H "Accept: application/json" https://list.mast.stsci.edu/api/v1/lists/34e1e459c816fc8ad0b8602ac6adfbd9
+curl -v -H "Accept: application/json" \
+https://list.mast.stsci.edu/api/v1/lists/34e1e459c816fc8ad0b8602ac6adfbd9
 ```
 
 ```
@@ -414,7 +415,8 @@ Connection: close
 `Things` are available as a nested resource on the parent `List`. For example, the `Things` for List ID `34e1e459c816fc8ad0b8602ac6adfbd9` are available at:
 
 ```
-curl -v -H "Accept: application/json" https://list.mast.stsci.edu/api/v1/lists/34e1e459c816fc8ad0b8602ac6adfbd9/things
+curl -v -H "Accept: application/json" \
+https://list.mast.stsci.edu/api/v1/lists/34e1e459c816fc8ad0b8602ac6adfbd9/things
 ```
 
 ```
@@ -563,7 +565,8 @@ Connection: close
 A single `Thing` can also be accessed via a nested `List` URL, for example, for `Thing` ID `de562564270ce9135871db63c7d75908`:
 
 ```
-curl -v -H "Accept: application/json" https://list.mast.stsci.edu/api/v1/lists/34e1e459c816fc8ad0b8602ac6adfbd9/things/de562564270ce9135871db63c7d75908
+curl -v -H "Accept: application/json" \
+https://list.mast.stsci.edu/api/v1/lists/34e1e459c816fc8ad0b8602ac6adfbd9/things/de562564270ce9135871db63c7d75908
 ```
 
 ```
@@ -621,10 +624,113 @@ The filtering functionality supports three basic filtering options:
 0. Greater than or equal to (e.g. `default_ra=gte123.456`)
 0. Less than or equal to (e.g. `default_ra=lte123.456`)
 
-Available filter parameters are defined by the parent `List` property keys and can be combined when constructing a query. For example, to find all `Things` (exoplanets in this case) for the `List` with ID `34e1e459c816fc8ad0b8602ac6adfbd9` with a RA greater than 20 degrees and a mass less than 10 mJupiter (assuming these are the units of a property):
+Available filter parameters are defined by the parent `List` property keys and can be combined when constructing a query.
+
+For example, to find all `Things` (exoplanets in this case) for the `List` defined in the [worked example above](#a-worked-example), with ID `34e1e459c816fc8ad0b8602ac6adfbd9`, with a RA greater than 20 degrees and a mass less than 10 mJupiter (assuming these are the units of a property):
 
 ```
-curl -v -H "Accept: application/json" https://list.mast.stsci.edu/api/v1/lists/34e1e459c816fc8ad0b8602ac6adfbd9/things/filter?default_ra=gte20&orbital_parameters_planet_mass=lte10
+curl -v -H "Accept: application/json" \
+https://list.mast.stsci.edu/api/v1/lists/34e1e459c816fc8ad0b8602ac6adfbd9/things/filter?default_ra=gte20&orbital_parameters_planet_mass=lte10
+```
+
+### Viewing a User and their public Lists
+
+If you know a User's ID then you can view the user and access their public lists via the API:
+
+```
+curl -v -H "Accept: application/json" \
+https://list.mast.stsci.edu/api/v1/users/:user_id
+```
+
+```
+HTTP/1.1 200 OK
+X-Content-Type-Options: nosniff
+Content-Type: application/json; charset=utf-8
+Connection: close
+
+{  
+   "data":{  
+      "id":"a8d4372e6481a445b07fd99f1701b240",
+      "type":"users",
+      "attributes":{  
+         "name":"Arfon Smith",
+         "lists":[  
+            {  
+               "id":2,
+               "name":"Arfon's Fantastic Exoplanets",
+               "sha":"34e1e459c816fc8ad0b8602ac6adfbd9",
+               "description":"Arfon's list of exoplanet candidates. Hand-picked just for you.",
+               "doi":null,
+               "properties":[  
+                  {  
+                     "key":"default_name",
+                     "kind":"String",
+                     "name":"Name",
+                     "group":"Default",
+                     "units":"",
+                     "required":"true"
+                  },
+                  {  
+                     "key":"default_star_name",
+                     "kind":"String",
+                     "name":"Star Name",
+                     "group":"Default",
+                     "units":"",
+                     "required":"true"
+                  },
+                  {  
+                     "key":"orbital_parameters_planet_mass",
+                     "kind":"Decimal",
+                     "name":"Planet Mass",
+                     "group":"Orbital Parameters",
+                     "units":"mjupiter",
+                     "required":"false"
+                  },
+                  {  
+                     "key":"default_ra",
+                     "kind":"Decimal",
+                     "name":"RA",
+                     "group":"Default",
+                     "units":"degrees",
+                     "required":"true"
+                  },
+                  {  
+                     "key":"default_dec",
+                     "kind":"Decimal",
+                     "name":"Dec",
+                     "group":"Default",
+                     "units":"degrees",
+                     "required":"true"
+                  }
+               ],
+               "user_id":1,
+               "visible":true,
+               "created_at":"2017-05-25T22:02:31.042Z",
+               "updated_at":"2017-05-25T22:45:29.759Z"
+            }
+         ]
+      },
+      "relationships":{  
+         "lists":{  
+            "data":[  
+               {  
+                  "id":"34e1e459c816fc8ad0b8602ac6adfbd9",
+                  "type":"lists"
+               }
+            ]
+         }
+      },
+      "links":{  
+         "self":"/api/v1/users/a8d4372e6481a445b07fd99f1701b240"
+      }
+   }
+}
+```
+
+Note that if a `User` has more than 30 public lists then you'll need to paginate, e.g.:
+
+```
+https://list.mast.stsci.edu/api/v1/users/:user_id&page=2
 ```
 
 
