@@ -8,19 +8,19 @@ class Thing < ApplicationRecord
   end
 
   def property_value_for(list_property_key)
-    if property = properties.select { |p| p['property_key'] == list_property_key }
-      return property.first['property_value']
+    if property = properties[list_property_key]
+      return property['value']
     else
       return ""
     end
   end
 
   def property_keys
-    @property_keys ||= properties.nil? ? [] : properties.collect { |p| p['property_key']}
+    @property_keys ||= properties.nil? ? [] : properties.keys
   end
 
   def property_values
-    @property_values ||= properties.nil? ? [] : properties.collect { |p| p['property_value']}
+    @property_values ||= properties.nil? ? [] : properties.values.collect { |p| p['value']}
   end
 
   # Things inherit their properties from their parent List

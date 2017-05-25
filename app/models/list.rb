@@ -24,6 +24,31 @@ class List < ApplicationRecord
     update_attributes(:properties => current_properties)
   end
 
+  # Takes a sanitized list of key:value pairs from the controller to query List
+  # Things on.
+  #
+  # Returns an ActiveRecord::AssociationRelation
+  def filter_things_with(query_string)
+    return self.things if query_string.empty?
+
+    scoped_things = self.things
+
+    # Loop through the query_string building a query as we go...
+    query_string.each do |query_key, query_value|
+      if query_value.start_with?('gte')
+        value = query_value.gsub(/^gte/, '')
+        scoped_things = scoped_things.where("properties -> '#{query_key}' ->> 'value' >= ?", value)
+      elsif query_value.start_with?('lte')
+        value = query_value.gsub(/^lte/, '')
+        scoped_things = scoped_things.where("properties -> '#{query_key}' ->> 'value' <= ?", value)
+      else
+        scoped_things = scoped_things.where("properties -> '#{query_key}' ->> 'value' = ?", query_value)
+      end
+    end
+
+    return scoped_things
+  end
+
   # TODO: Check that we're not adding duplicates etc.
   def valid_property?(property)
     true

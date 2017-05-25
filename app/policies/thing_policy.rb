@@ -10,6 +10,10 @@ class ThingPolicy
     show?
   end
 
+  def filter?
+    show?
+  end
+
   def show?
     # Everyone can see a list if it's marked as 'visible'
     return true if thing.list.visible?

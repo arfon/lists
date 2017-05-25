@@ -38,11 +38,12 @@ describe Thing do
 
     list.add_property!(property)
 
-    thing_properties = [{
-      "property_key" => "orbital_parameters_semi_major_axis",
-      "property_value" => "1.0",
-      "property_origin" => "http://arxiv.org/abs/1402.6534"
-    }]
+    thing_properties = {
+      "orbital_parameters_semi_major_axis" => {
+        "value" => "1.0",
+        "origin" => "http://arxiv.org/abs/1402.6534"
+      }
+    }
 
     thing = create(:thing, :properties => thing_properties, :list => list)
 
@@ -50,15 +51,17 @@ describe Thing do
     expect(thing.available_property_keys.first).to eq("orbital_parameters_semi_major_axis")
     expect(thing.available_properties.first['name']).to eq("Semi-Major Axis")
     expect(thing.property_values.first).to eq("1.0")
-    expect(thing.properties.first['property_origin']).to eq("http://arxiv.org/abs/1402.6534")
+    expect(thing.properties['orbital_parameters_semi_major_axis']['origin']).to eq("http://arxiv.org/abs/1402.6534")
   end
 
   it "should be impossible to create a Thing with invalid properties" do
     list = create(:list)
 
-    thing_properties = [{
-      "foo" => "bar"
-    }]
+    thing_properties = {
+      "jimmy" => {
+        "two" => "shakes"
+      }
+    }
 
     expect { create(:thing, :properties => thing_properties, :list => list) }.to raise_error(ActiveRecord::RecordInvalid)
   end

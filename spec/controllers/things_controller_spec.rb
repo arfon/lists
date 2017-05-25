@@ -45,4 +45,58 @@ describe ThingsController, :type => :controller do
       expect(response.status).to eq(403)
     end
   end
+
+  # Filtering Things
+  describe "GET #filter" do
+    it "should know how to sanitize filter params" do
+      list = create(:list, :visible => true)
+
+      thing_properties = {
+        "default_name" => {
+          "value" => "Kepler-181 b",
+          "origin" => "http://arxiv.org/abs/1402.6534"
+        },
+        "stellar_properties_star_name" => {
+          "value" => "Kepler-181",
+          "origin" => "http://arxiv.org/abs/1402.6534"
+        },
+        "orbital_parameters_planet_mass" => {
+          "value" => "1.9",
+          "origin" => "http://arxiv.org/abs/1402.6534"
+        }
+      }
+
+      thing = create(:thing, :list => list, :properties => thing_properties)
+
+      get :filter, :params => { :list_id => list.to_param, :default_name => "Kepler-181 b", :foo => "bar" }, :format => :json
+      expect(response.status).to eq(200)
+      expect(@controller.send(:sanitize_query_fields)).to eq({"default_name" => "Kepler-181 b"})
+      assert_equal hash_from_json(response.body)["data"].first["id"], list.things.first.sha
+    end
+
+    it "should know how to filter with ranges" do
+      list = create(:list, :visible => true)
+
+      thing_properties = {
+        "default_name" => {
+          "value" => "Kepler-181 b",
+          "origin" => "http://arxiv.org/abs/1402.6534"
+        },
+        "stellar_properties_star_name" => {
+          "value" => "Kepler-181",
+          "origin" => "http://arxiv.org/abs/1402.6534"
+        },
+        "orbital_parameters_planet_mass" => {
+          "value" => "1.9",
+          "origin" => "http://arxiv.org/abs/1402.6534"
+        }
+      }
+
+      thing = create(:thing, :list => list, :properties => thing_properties)
+
+      get :filter, :params => { :list_id => list.to_param, :orbital_parameters_planet_mass => "gte1.8", :default_name => "Kepler-181 b" }, :format => :json
+      expect(response.status).to eq(200)
+      assert_equal hash_from_json(response.body)["data"].first["id"], list.things.first.sha
+    end
+  end
 end

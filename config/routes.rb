@@ -7,7 +7,11 @@ Rails.application.routes.draw do
 
   scope '/api/v1', :as => 'api' do
     resources :lists, :only => [:index, :show] do
-      resources :things, :only => [:index, :show]
+      resources :things, :only => [:index, :show] do
+        collection do
+          get 'filter'
+        end
+      end
     end
 
     resources :users, :only => [:show]
