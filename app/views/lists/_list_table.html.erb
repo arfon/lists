@@ -12,7 +12,13 @@
     <tr>
       <th scope="row"><%= index + 1 %></th>
       <% @list.properties.each do |list_property |%>
-      <td><%= list_thing.property_value_for(list_property['key']) %></td>
+        <% url = list_thing.origin_url_for(list_property['key']) %>
+
+        <% if !url.blank? %>
+        <td><%= link_to list_thing.property_value_for(list_property['key']), url, :target => "_blank" %></td>
+        <% else %>
+        <td><%= list_thing.property_value_for(list_property['key']) %></td>
+        <% end %>
       <% end %>
     </tr>
     <% end %>

@@ -15,6 +15,14 @@ class Thing < ApplicationRecord
     end
   end
 
+  def origin_url_for(list_property_key)
+    if property = properties[list_property_key]
+      return property['origin']
+    else
+      return ""
+    end
+  end
+
   def property_keys
     @property_keys ||= properties.nil? ? [] : properties.keys
   end
