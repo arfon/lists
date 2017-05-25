@@ -126,4 +126,117 @@ describe List do
     expect(list.reload.properties.length).to eq(1)
     expect(list.reload.properties.first['key']).to eq("orbital_parameters_semi_major_axis")
   end
+
+  it "should know how to filter it's Things based on passed key:value pairs with ranges" do
+    list = create(:list_without_properties)
+    property = {
+      "name" => "Semi-Major Axis",
+      "units" => "au",
+      "kind" => "Decimal",
+      "required" => false,
+      "group" => "Orbital Parameters"
+    }
+
+    list.add_property!(property)
+    list.save
+
+    thing_1_properties = {
+      "orbital_parameters_semi_major_axis" => {
+        "value" => "1.0",
+        "origin" => "http://arxiv.org/abs/1402.6534"
+      }
+    }
+
+    thing_2_properties = {
+      "orbital_parameters_semi_major_axis" => {
+        "value" => "0.9",
+        "origin" => "http://arxiv.org/abs/1402.6534"
+      }
+    }
+
+    thing_1 = create(:thing, :properties => thing_1_properties, :list => list)
+    thing_2 = create(:thing, :properties => thing_2_properties, :list => list)
+
+    expect(list.filter_things_with({'orbital_parameters_semi_major_axis' => '1.0'})).to include(thing_1)
+    expect(list.filter_things_with({'orbital_parameters_semi_major_axis' => '1.0'})).not_to include(thing_2)
+    expect(list.filter_things_with({'orbital_parameters_semi_major_axis' => 'gte0.9'})).to contain_exactly(thing_1, thing_2)
+    expect(list.filter_things_with({'orbital_parameters_semi_major_axis' => 'lte0.8'})).to be_empty
+  end
+
+  it "should know how to filter it's Things based on passed key:value pairs with mixed ranges and exact operators" do
+    list = create(:list_without_properties)
+    property_1 = {
+      "name" => "Semi-Major Axis",
+      "units" => "au",
+      "kind" => "Decimal",
+      "required" => false,
+      "group" => "Orbital Parameters",
+      "key" => "orbital_parameters_semi_major_axis"
+    }
+
+    property_2 = {
+      "name" => "Planet Name",
+      "units" => "",
+      "kind" => "String",
+      "required" => true,
+      "group" => "Default",
+      "key" => "default_planet_name"
+    }
+
+    property_3 = {
+      "name" => "Planet Mass",
+      "units" => "mJupiter",
+      "kind" => "Decimal",
+      "required" => true,
+      "group" => "Default",
+      "key" => "default_planet_mass"
+    }
+
+    list.add_property!(property_1)
+    list.save
+
+    list.add_property!(property_2)
+    list.save
+
+    list.add_property!(property_3)
+    list.save
+
+    thing_1_properties = {
+      "orbital_parameters_semi_major_axis" => {
+        "value" => "1.0",
+        "origin" => "http://arxiv.org/abs/1402.6534"
+      },
+      "default_planet_name" => {
+        "value" => "Kepler-181 b",
+        "origin" => "http://arxiv.org/abs/1402.6534"
+      },
+      "default_planet_mass" => {
+        "value" => "5.6",
+        "origin" => "http://arxiv.org/abs/1402.6534"
+      }
+    }
+
+    thing_2_properties = {
+      "orbital_parameters_semi_major_axis" => {
+        "value" => "1.9",
+        "origin" => "http://arxiv.org/abs/1402.6534"
+      },
+      "default_planet_name" => {
+        "value" => "Kepler-181 c",
+        "origin" => "http://arxiv.org/abs/1402.6534"
+      },
+      "default_planet_mass" => {
+        "value" => "1.6",
+        "origin" => "http://arxiv.org/abs/1402.6534"
+      }
+    }
+
+    thing_1 = create(:thing, :properties => thing_1_properties, :list => list)
+    thing_2 = create(:thing, :properties => thing_2_properties, :list => list)
+
+    expect(list.filter_things_with({'orbital_parameters_semi_major_axis' => '1.0'})).to include(thing_1)
+    expect(list.filter_things_with({'orbital_parameters_semi_major_axis' => '1.9', 'default_planet_name' => 'Kepler-181 c'})).to include(thing_2)
+    expect(list.filter_things_with({'orbital_parameters_semi_major_axis' => 'lte1.9', 'default_planet_name' => 'Kepler-181 c', 'default_planet_mass' => 'gte1.5'})).to include(thing_2)
+    expect(list.filter_things_with({'orbital_parameters_semi_major_axis' => '1.9', 'default_planet_name' => 'Kepler-181 c', 'default_planet_mass' => 'lte1.5'})).to be_empty
+  end
 end
