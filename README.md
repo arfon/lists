@@ -4,7 +4,7 @@ This is Lists<sup>\*</sup>, a really simple service for creating and maintaining
 
 ## Getting started
 
-First visit [`http://list.mast.stsci.edu`](http://list.mast.stsci.edu) to get started - you'll need an ORCID account to sign in.
+First visit [`https://list.mast.stsci.edu`](http://list.mast.stsci.edu) to get started - you'll need an ORCID account to sign in.
 
 ## About Lists
 
@@ -168,7 +168,468 @@ Load the local repository into the local database. By default doesn't save recor
 
 ## API
 
-To be written
+Lists has a simple API RESTful that allows you to view `Lists` and their associated `Things` and also filter these `Things` based on custom URL filters.
+
+The Lists API responses implement the [JSON-API](http://jsonapi.org/) specification.
+
+### Base URL
+
+All URLs referenced in the following documentation have the following base:
+
+```
+https://list.mast.stsci.edu/api/v1
+```
+
+### Authentication
+
+Currently authentication is not supported via the API. Therefore, only visible Lists are available via the API.
+
+### Pagination
+
+By default all collection resources support pagination. Resource can be paged through by passing a `page=` URL parameter. The default page size is 30 records, this can be adjusted by passing a `per_page=` URL parameter (e.g. `per_page=50`).
+
+### Cheat Sheet
+
+If you're just looking for a quick list of the URLs that the Lists service exposes here it is:
+
+```
+All public lists: https://list.mast.stsci.edu/api/v1/lists
+A single list: https://list.mast.stsci.edu/api/v1/lists/:list_id
+
+A list's Things: https://list.mast.stsci.edu/api/v1/lists/:list_id/things
+Filtering a List's Things: https://list.mast.stsci.edu/api/v1/lists/:list_id/things/filter?query=param
+A single List Thing: https://list.mast.stsci.edu/api/v1/lists/:list_id/things/:thing_id
+
+All Users: https://list.mast.stsci.edu/api/v1/users
+A User's public lists: https://list.mast.stsci.edu/api/v1/users/:user_id/lists
+```
+
+For more in-depth documentation read on...
+
+### List Resource
+
+The 30 most recent visible `Lists` are available at:
+
+```
+curl -v -H "Accept: application/json" https://list.mast.stsci.edu/api/v1/lists
+```
+
+```
+HTTP/1.1 200 OK
+X-Content-Type-Options: nosniff
+Content-Type: application/json; charset=utf-8
+Connection: close
+
+{  
+   "data":[  
+      {  
+         "id":"34e1e459c816fc8ad0b8602ac6adfbd9",
+         "type":"lists",
+         "attributes":{  
+            "name":"Arfon's Fantastic Exoplanets",
+            "description":"Arfon's list of exoplanet candidates. Hand-picked just for you.",
+            "properties":[  
+               {  
+                  "key":"default_name",
+                  "kind":"String",
+                  "name":"Name",
+                  "group":"Default",
+                  "units":"",
+                  "required":"true"
+               },
+               {  
+                  "key":"default_star_name",
+                  "kind":"String",
+                  "name":"Star Name",
+                  "group":"Default",
+                  "units":"",
+                  "required":"true"
+               },
+               {  
+                  "key":"orbital_parameters_planet_mass",
+                  "kind":"Decimal",
+                  "name":"Planet Mass",
+                  "group":"Orbital Parameters",
+                  "units":"mjupiter",
+                  "required":"false"
+               },
+               {  
+                  "key":"default_ra",
+                  "kind":"Decimal",
+                  "name":"RA",
+                  "group":"Default",
+                  "units":"degrees",
+                  "required":"true"
+               },
+               {  
+                  "key":"default_dec",
+                  "kind":"Decimal",
+                  "name":"Dec",
+                  "group":"Default",
+                  "units":"degrees",
+                  "required":"true"
+               }
+            ]
+         },
+         "relationships":{  
+            "things":{  
+               "data":[  
+                  {  
+                     "id":"1c82ecc057c2ccfdde763a1997664700",
+                     "type":"things"
+                  },
+                  {  
+                     "id":"de562564270ce9135871db63c7d75908",
+                     "type":"things"
+                  },
+                  {  
+                     "id":"efbeee053fd22b8546fe0ee102d43c2a",
+                     "type":"things"
+                  },
+                  {  
+                     "id":"8adb6fafc6734f5d88952aec34b3324d",
+                     "type":"things"
+                  }
+               ]
+            }
+         },
+         "links":{  
+            "self":"/api/v1/lists/34e1e459c816fc8ad0b8602ac6adfbd9",
+            "things":"/api/v1/lists/34e1e459c816fc8ad0b8602ac6adfbd9/things"
+         }
+      }
+   ],
+   "links":{  
+
+   }
+}
+```
+
+Additional lists can be accessed by paging, e.g.:
+
+```
+https://list.mast.stsci.edu/api/v1/lists?page=2
+```
+
+#### Accessing a single List
+
+Following RESTful conventions, individual Lists are available at:
+
+```
+https://list.mast.stsci.edu/api/v1/lists/:list_id
+```
+
+```
+curl -v -H "Accept: application/json" https://list.mast.stsci.edu/api/v1/lists/34e1e459c816fc8ad0b8602ac6adfbd9
+```
+
+```
+HTTP/1.1 200 OK
+X-Content-Type-Options: nosniff
+Content-Type: application/json; charset=utf-8
+Connection: close
+
+{  
+   "data":{  
+      "id":"34e1e459c816fc8ad0b8602ac6adfbd9",
+      "type":"lists",
+      "attributes":{  
+         "name":"Arfon's Fantastic Exoplanets",
+         "description":"Arfon's list of exoplanet candidates. Hand-picked just for you.",
+         "properties":[  
+            {  
+               "key":"default_name",
+               "kind":"String",
+               "name":"Name",
+               "group":"Default",
+               "units":"",
+               "required":"true"
+            },
+            {  
+               "key":"default_star_name",
+               "kind":"String",
+               "name":"Star Name",
+               "group":"Default",
+               "units":"",
+               "required":"true"
+            },
+            {  
+               "key":"orbital_parameters_planet_mass",
+               "kind":"Decimal",
+               "name":"Planet Mass",
+               "group":"Orbital Parameters",
+               "units":"mjupiter",
+               "required":"false"
+            },
+            {  
+               "key":"default_ra",
+               "kind":"Decimal",
+               "name":"RA",
+               "group":"Default",
+               "units":"degrees",
+               "required":"true"
+            },
+            {  
+               "key":"default_dec",
+               "kind":"Decimal",
+               "name":"Dec",
+               "group":"Default",
+               "units":"degrees",
+               "required":"true"
+            }
+         ]
+      },
+      "relationships":{  
+         "things":{  
+            "data":[  
+               {  
+                  "id":"1c82ecc057c2ccfdde763a1997664700",
+                  "type":"things"
+               },
+               {  
+                  "id":"de562564270ce9135871db63c7d75908",
+                  "type":"things"
+               },
+               {  
+                  "id":"efbeee053fd22b8546fe0ee102d43c2a",
+                  "type":"things"
+               },
+               {  
+                  "id":"8adb6fafc6734f5d88952aec34b3324d",
+                  "type":"things"
+               }
+            ]
+         }
+      },
+      "links":{  
+         "self":"/api/v1/lists/34e1e459c816fc8ad0b8602ac6adfbd9",
+         "things":"/api/v1/lists/34e1e459c816fc8ad0b8602ac6adfbd9/things"
+      }
+   }
+}
+```
+
+### Thing Resource
+
+`Things` are available as a nested resource on the parent `List`. For example, the `Things` for List ID `34e1e459c816fc8ad0b8602ac6adfbd9` are available at:
+
+```
+curl -v -H "Accept: application/json" https://list.mast.stsci.edu/api/v1/lists/34e1e459c816fc8ad0b8602ac6adfbd9/things
+```
+
+```
+HTTP/1.1 200 OK
+X-Content-Type-Options: nosniff
+Content-Type: application/json; charset=utf-8
+Connection: close
+
+{  
+   "data":[  
+      {  
+         "id":"1c82ecc057c2ccfdde763a1997664700",
+         "type":"things",
+         "attributes":{  
+            "properties":{  
+               "default-ra":{  
+                  "value":"286.0166667",
+                  "origin":"http://adsabs.harvard.edu/abs/2016ApJ...822...86M"
+               },
+               "default-dec":{  
+                  "value":"50.0958333",
+                  "origin":"http://adsabs.harvard.edu/abs/2016ApJ...822...86M"
+               },
+               "default-name":{  
+                  "value":"Kepler-1156 b",
+                  "origin":"http://adsabs.harvard.edu/abs/2016ApJ...822...86M"
+               },
+               "default-star-name":{  
+                  "value":"Kepler-1156",
+                  "origin":""
+               },
+               "orbital-parameters-planet-mass":{  
+                  "value":"0.0067",
+                  "origin":"http://adsabs.harvard.edu/abs/2016ApJ...822...86M"
+               }
+            }
+         },
+         "links":{  
+            "self":"/api/v1/lists/34e1e459c816fc8ad0b8602ac6adfbd9/things/1c82ecc057c2ccfdde763a1997664700",
+            "list":"/api/v1/lists/34e1e459c816fc8ad0b8602ac6adfbd9"
+         }
+      },
+      {  
+         "id":"de562564270ce9135871db63c7d75908",
+         "type":"things",
+         "attributes":{  
+            "properties":{  
+               "default-ra":{  
+                  "value":"286.0166667",
+                  "origin":"http://arxiv.org/abs/1402.6534"
+               },
+               "default-dec":{  
+                  "value":"50.0958333",
+                  "origin":"http://arxiv.org/abs/1402.6534"
+               },
+               "default-name":{  
+                  "value":"Kepler-181 b",
+                  "origin":"http://arxiv.org/abs/1402.6534"
+               },
+               "default-star-name":{  
+                  "value":"Kepler-181",
+                  "origin":""
+               },
+               "orbital-parameters-planet-mass":{  
+                  "value":"0.0067",
+                  "origin":"http://arxiv.org/abs/1402.6534"
+               }
+            }
+         },
+         "links":{  
+            "self":"/api/v1/lists/34e1e459c816fc8ad0b8602ac6adfbd9/things/de562564270ce9135871db63c7d75908",
+            "list":"/api/v1/lists/34e1e459c816fc8ad0b8602ac6adfbd9"
+         }
+      },
+      {  
+         "id":"efbeee053fd22b8546fe0ee102d43c2a",
+         "type":"things",
+         "attributes":{  
+            "properties":{  
+               "default-ra":{  
+                  "value":"286.0166667",
+                  "origin":"http://arxiv.org/abs/1402.6534"
+               },
+               "default-dec":{  
+                  "value":"50.0958333",
+                  "origin":"http://arxiv.org/abs/1402.6534"
+               },
+               "default-name":{  
+                  "value":"Kepler-181 c",
+                  "origin":"http://arxiv.org/abs/1402.6534"
+               },
+               "default-star-name":{  
+                  "value":"Kepler-181",
+                  "origin":""
+               },
+               "orbital-parameters-planet-mass":{  
+                  "value":"0.0015",
+                  "origin":"http://arxiv.org/abs/1402.6534"
+               }
+            }
+         },
+         "links":{  
+            "self":"/api/v1/lists/34e1e459c816fc8ad0b8602ac6adfbd9/things/efbeee053fd22b8546fe0ee102d43c2a",
+            "list":"/api/v1/lists/34e1e459c816fc8ad0b8602ac6adfbd9"
+         }
+      },
+      {  
+         "id":"8adb6fafc6734f5d88952aec34b3324d",
+         "type":"things",
+         "attributes":{  
+            "properties":{  
+               "default-ra":{  
+                  "value":"286.0166667",
+                  "origin":"http://adsabs.harvard.edu/abs/2006ApJ...646..505B"
+               },
+               "default-dec":{  
+                  "value":"50.0958333",
+                  "origin":"http://adsabs.harvard.edu/abs/2006ApJ...646..505B"
+               },
+               "default-name":{  
+                  "value":"WASP-14 b",
+                  "origin":"http://arxiv.org/abs/1402.6534"
+               },
+               "default-star-name":{  
+                  "value":"WASP-14",
+                  "origin":""
+               },
+               "orbital-parameters-planet-mass":{  
+                  "value":"7.69",
+                  "origin":"http://adsabs.harvard.edu/abs/2006ApJ...646..505B"
+               }
+            }
+         },
+         "links":{  
+            "self":"/api/v1/lists/34e1e459c816fc8ad0b8602ac6adfbd9/things/8adb6fafc6734f5d88952aec34b3324d",
+            "list":"/api/v1/lists/34e1e459c816fc8ad0b8602ac6adfbd9"
+         }
+      }
+   ],
+   "links":{  
+
+   }
+}
+```
+
+A single `Thing` can also be accessed via a nested `List` URL, for example, for `Thing` ID `de562564270ce9135871db63c7d75908`:
+
+```
+curl -v -H "Accept: application/json" https://list.mast.stsci.edu/api/v1/lists/34e1e459c816fc8ad0b8602ac6adfbd9/things/de562564270ce9135871db63c7d75908
+```
+
+```
+HTTP/1.1 200 OK
+X-Content-Type-Options: nosniff
+Content-Type: application/json; charset=utf-8
+Connection: close
+
+{  
+   "data":{  
+      "id":"de562564270ce9135871db63c7d75908",
+      "type":"things",
+      "attributes":{  
+         "properties":{  
+            "default-ra":{  
+               "value":"286.0166667",
+               "origin":"http://arxiv.org/abs/1402.6534"
+            },
+            "default-dec":{  
+               "value":"50.0958333",
+               "origin":"http://arxiv.org/abs/1402.6534"
+            },
+            "default-name":{  
+               "value":"Kepler-181 b",
+               "origin":"http://arxiv.org/abs/1402.6534"
+            },
+            "default-star-name":{  
+               "value":"Kepler-181",
+               "origin":""
+            },
+            "orbital-parameters-planet-mass":{  
+               "value":"0.0067",
+               "origin":"http://arxiv.org/abs/1402.6534"
+            }
+         }
+      },
+      "links":{  
+         "self":"/api/v1/lists/34e1e459c816fc8ad0b8602ac6adfbd9/things/de562564270ce9135871db63c7d75908",
+         "list":"/api/v1/lists/34e1e459c816fc8ad0b8602ac6adfbd9"
+      }
+   }
+}
+```
+
+### Filtering Things
+
+It's possible to return only a subset of the `Things` associated with a `List`. This is achieved by passing custom URL parameters that match the `List` property keys to the following URL:
+
+```
+https://list.mast.stsci.edu/api/v1/lists/:list_id/things/filter
+```
+
+The filtering functionality supports three basic filtering options:
+0. Exact match (e.g. `default_ra=123.456`)
+0. Greater than or equal to (e.g. `default_ra=gte123.456`)
+0. Less than or equal to (e.g. `default_ra=lte123.456`)
+
+Available filter parameters are defined by the parent `List` property keys and can be combined when constructing a query. For example, to find all `Things` (exoplanets in this case) for the `List` with ID `34e1e459c816fc8ad0b8602ac6adfbd9` with a RA greater than 20 degrees and a mass less than 10 mJupiter (assuming these are the units of a property):
+
+```
+curl -v -H "Accept: application/json" https://list.mast.stsci.edu/api/v1/lists/34e1e459c816fc8ad0b8602ac6adfbd9/things/filter?default_ra=gte20&orbital_parameters_planet_mass=lte10
+```
+
+
+
+
 
 ---------------------------------------
 <sup>\*</sup>Formerly known as Listicles
