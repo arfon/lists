@@ -33,7 +33,7 @@ ActiveRecord::Schema.define(version: 20170514024307) do
   end
 
   create_table "things", force: :cascade do |t|
-    t.jsonb "properties"
+    t.jsonb "properties", default: "{}", null: false
     t.string "sha"
     t.integer "list_id"
     t.datetime "created_at", null: false

@@ -52,10 +52,10 @@ class Lists < Thor
     things.each do |source_thing|
       thing_name = File.basename(source_thing)
       thing_yaml = YAML.load_file("#{source_thing}")
-      thing_properties << thing_yaml['properties']
+      thing_properties << thing_yaml
     end
 
-    thing_propery_keys = thing_properties.flatten.collect { |property| property['property_key'] }
+    thing_propery_keys = thing_properties.first.keys
 
     unassigned_thing_keys = thing_propery_keys - property_keys
     puts "ERROR: Things have invalid property keys #{unassigned_thing_keys.uniq}" if unassigned_thing_keys.any?
