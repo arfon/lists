@@ -20,7 +20,7 @@ To create a List you first need to create a Git repository with the metadata tha
 
 A List repository should have the following basic structure:
 
-```
+```yaml
 list.yaml       <-- A YAML file describing the List (required)
 things/         <-- A folder called 'things' with separate files for each Thing (required)
 LICENSE         <-- Recommended
@@ -46,7 +46,7 @@ So to describe our list of exoplanet candidates we are describing the following 
 
 The YAML to describe this list is as follows:
 
-```
+```yaml
 name: "Arfon's Fantastic Exoplanets"
 description: "Arfon's list of exoplanet candidates. Hand-picked just for you."
 properties:
@@ -84,7 +84,7 @@ properties:
 
 `properties` in `list.yaml` is a YAML array and each of the `properties` in the array has the following structure:
 
-```
+```yaml
 - name: "RA"        <-- The property name (required)
   kind: "Decimal"   <-- The 'type' of the property
   units: "degrees"  <-- The units of the property value
@@ -103,7 +103,7 @@ The `key` field for a property is used to relate the top-level `properties` defi
 
 Things should be nested in the List repository in a folder named `things`. Each `Thing` in your list should have its own file. Below is an example for the exoplanet candidate Kepler 181 b:
 
-```
+```yaml
 # Example for `things/kepler-181-b.yaml`
 
 default_name:
