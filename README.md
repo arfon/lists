@@ -85,12 +85,12 @@ properties:
 `properties` in `list.yaml` is a YAML array and each of the `properties` in the array has the following structure:
 
 ```yaml
-- name: "RA"        <-- The property name (required)
-  kind: "Decimal"   <-- The 'type' of the property
-  units: "degrees"  <-- The units of the property value
-  required: "true"  <-- Whether this is a required property for the Thing
-  group: "Default"  <-- The property group
-  key: "default_ra" <-- The unique key identifying the property (required)
+- name: "RA"          # The property name (required)
+  kind: "Decimal"     # The 'type' of the property
+  units: "degrees"    # The units of the property value
+  required: "true"    # Whether this is a required property for the Thing
+  group: "Default"    # The property group
+  key: "default_ra"   # The unique key identifying the property (required)
 ```
 
 **Important**
