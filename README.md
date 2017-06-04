@@ -21,10 +21,10 @@ To create a List you first need to create a Git repository with the metadata tha
 A List repository should have the following basic structure:
 
 ```yaml
-list.yaml       <-- A YAML file describing the List (required)
-things/         <-- A folder called 'things' with separate files for each Thing (required)
-LICENSE         <-- Recommended
-README.md       <-- Recommended
+list.yaml       # A YAML file describing the List (required)
+things/         # A folder called 'things' with separate files for each Thing (required)
+LICENSE         # Recommended
+README.md       # Recommended
 
 ```
 
