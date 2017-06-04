@@ -30,7 +30,7 @@ README.md       <-- Recommended
 
 YAML is a human-readable markup language. You can read more about the YAML syntax here: https://en.wikipedia.org/wiki/YAML
 
-### A worked example
+## A worked example
 
 An example of a list for exoplanets is here: https://github.com/arfon/exoplanet_list.
 
