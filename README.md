@@ -4,7 +4,7 @@ This is Lists<sup>\*</sup>, a really simple service for creating and maintaining
 
 ## Getting started
 
-First visit [`https://list.mast.stsci.edu`](http://list.mast.stsci.edu) to get started - you'll need an ORCID account to sign in.
+First visit [`https://lists.mast.stsci.edu`](http://lists.mast.stsci.edu) to get started - you'll need an ORCID account to sign in.
 
 ## About Lists
 
@@ -30,7 +30,7 @@ README.md       <-- Recommended
 
 YAML is a human-readable markup language. You can read more about the YAML syntax here: https://en.wikipedia.org/wiki/YAML
 
-#### A worked example
+### A worked example
 
 An example of a list for exoplanets is here: https://github.com/arfon/exoplanet_list.
 
@@ -172,6 +172,15 @@ Lists has a simple API RESTful that allows you to view `Lists` and their associa
 
 The Lists API responses implement the [JSON-API](http://jsonapi.org/) specification.
 
+- [Pagination](#pagination)
+- [URL cheatsheet](#url-cheat-sheet)
+- [List resource](#list-resource)
+  - [Accessing a single list](#accessing-a-single-list)
+- [Thing resource](#thing-resource)
+  - [Accessing a single thing](#accessing-a-single-thing)
+  - [Filtering things](#filtering-things)
+- [Viewing a user and their lists](#viewing-a-user-and-their-public-lists)
+
 ### Base URL
 
 All URLs referenced in the following documentation have the following base:
@@ -188,7 +197,7 @@ Currently authentication is not supported via the API. Therefore, only visible L
 
 By default all collection resources support pagination. Resource can be paged through by passing a `page=` URL parameter. The default page size is 30 records, this can be adjusted by passing a `per_page=` URL parameter (e.g. `per_page=50`).
 
-### Cheat Sheet
+### URL Cheat Sheet
 
 If you're just looking for a quick list of the URLs that the Lists service exposes here it is:
 
@@ -311,7 +320,7 @@ Additional lists can be accessed by paging, e.g.:
 https://list.mast.stsci.edu/api/v1/lists?page=2
 ```
 
-#### Accessing a single List
+### Accessing a single List
 
 Following RESTful conventions, individual Lists are available at:
 
@@ -561,6 +570,8 @@ Connection: close
    }
 }
 ```
+
+### Accessing a single thing
 
 A single `Thing` can also be accessed via a nested `List` URL, for example, for `Thing` ID `de562564270ce9135871db63c7d75908`:
 
