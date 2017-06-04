@@ -172,6 +172,8 @@ Lists has a simple API RESTful that allows you to view `Lists` and their associa
 
 The Lists API responses implement the [JSON-API](http://jsonapi.org/) specification.
 
+- [Base URL](#base-url)
+- [Authentication](#authentication)
 - [Pagination](#pagination)
 - [URL cheatsheet](#url-cheat-sheet)
 - [List resource](#list-resource)
