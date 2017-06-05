@@ -20,11 +20,8 @@ Rails.application.routes.draw do
   resources :users, :only => [:show]
 
   get '/auth/:provider/callback', :to => 'sessions#create'
-  get '/profile', :to => 'home#profile', :as => 'profile'
   get "/signout" => "sessions#destroy", :as => :signout
-
-  # General application routes
-  get '/about', :to => 'lists#about', :as => 'about'
+  get '/about', :to => 'home#about', :as => 'about'
 
   root :to => 'lists#index'
 end

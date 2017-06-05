@@ -1,0 +1,43 @@
+<div class="container top">
+  <div class="page-header">
+    <h2>About Lists</h2>
+  </div>
+</div>
+<div class="container small-top">
+  <div class="row">
+    <div class="col-9">
+      <p class="lead">
+        Lists is a service by MAST Labs for creating, sharing, and managing lists of astronomical things with the community. Lists are backed by a Git repository and can be public or private. Lists have a flexible data model and have a searchable UI and API by default.
+      </p>
+      <h4>Making a List</h4>
+
+      <p>To create a List you first need to create a Git repository with the metadata that defines the list properties and the Things you want to include in your List. An example of a list for exoplanets is here: <a href="https://github.com/arfon/exoplanet_list"><code>https://github.com/arfon/exoplanet_list</code></a></p>
+
+      <p>A List repository should have the following basic structure:</p>
+      <script src="https://gist.github.com/arfon/4d626aab0a374a8a2cbc3802d93846f6.js"></script>
+
+      <p>Here's an example <code>list.yaml</code> file. It has a <code>name</code>, <code>description</code> and array of <code>properties</code>.</p>
+      <script src="https://gist.github.com/arfon/2572db0497ec305811af26c8498df852.js"></script>
+
+      <p>In the <code>things</code> directory we have a collection of files, one per thing (in this case, exoplanet). Note that the YAML keys (e.g. <code>default_star_name</code>) match the keys defined in the <code>list.yaml</code> properties.</p>
+      <script src="https://gist.github.com/arfon/fcceabb5552ece5c02fa245b4e8a5898.js"></script>
+
+      <h4>Updating a List</h4>
+
+      <p>...is currently not possible.</p>
+    </div>
+    <div class="col">
+      <div class="login-block">
+      <% if current_user %>
+        <p class="name"><%= current_user.name %> &middot; <%= link_to "Sign out", signout_path %></p>
+      <% else %>
+        <p class="name"><%= image_tag "orcid_24x24.png" %> <%= link_to "Sign in with ORCID", "/auth/orcid" %></p>
+      <% end %>
+
+      <p>This is MAST Lists. A really simple service for managing Lists of astronomical objects.</p>
+
+      <p>Sign in with your ORCID account to get Listing.</p>
+      </div>
+    </div>
+  </div>
+</div>

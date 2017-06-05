@@ -11,14 +11,16 @@
     </a>
     <div class="collapse navbar-collapse" id="navbarCollapse">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="#">Recent Lists <span class="sr-only">(current)</span></a>
+        <li class='<%= cp("/")%>'>
+          <%= link_to "Recent Lists", root_path, :class => "nav-link" %>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">My Lists</a>
+        <% if current_user %>
+        <li class='<%= cp(user_path(current_user))%>'>
+          <%= link_to "My Lists", user_path(current_user), :class => "nav-link" %>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">About</a>
+        <% end %>
+        <li class='<%= cp(about_path)%>'>
+          <%= link_to "About", about_path, :class => "nav-link" %>
         </li>
       </ul>
     </div>
