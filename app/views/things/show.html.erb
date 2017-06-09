@@ -1,0 +1,26 @@
+<div class="container medium-top">
+  <h1>Thing <span class="sha text-muted">(<%= link_to "##{@thing.sha}", list_thing_path(@list, @thing) %>)</span></h1>
+  <div class="list-meta">
+    <p>Belongs to <%= link_to @list.name, list_path(@list) %> &middot; Contains <%= pluralize(@list.things.size, 'thing') %> &middot; <%= link_to "Download CSV &rarr;".html_safe, list_path(@list, :format => :csv) %> &middot; <%= private_tag(@list)%></p>
+  </div>
+
+  <% @thing.list.grouped_properties.each do |group_name, properties| %>
+  <div class="card">
+    <div class="card-header">
+      <%= group_name %>
+    </div>
+    <div class="card-block">
+      <ul>
+    <% properties.each do |list_property| %>
+      <% url = @thing.origin_url_for(list_property['key']) %>
+      <% if !url.blank? %>
+      <li><%= list_property['name'] %>: <%= link_to @thing.property_value_for(list_property['key']), url, :target => "_blank" %></li>
+      <% else %>
+      <li><%= list_property['name'] %>: <%= @thing.property_value_for(list_property['key']) %></li>
+      <% end %>
+    <% end %>
+      </ul>
+    </div>
+  </div>
+  <% end %>
+</div>

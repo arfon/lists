@@ -49,6 +49,10 @@ class List < ApplicationRecord
     return scoped_things
   end
 
+  def grouped_properties
+    properties.group_by {|p| p['group']}
+  end
+
   # TODO: Check that we're not adding duplicates etc.
   def valid_property?(property)
     true

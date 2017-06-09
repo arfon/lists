@@ -10,7 +10,7 @@
   <tbody>
     <% @list.things.each_with_index do |list_thing, index| %>
     <tr>
-      <th scope="row"><%= index + 1 %></th>
+      <th scope="row"><%= link_to "#{index + 1}", list_thing_path(@list, list_thing) %></th>
       <% @list.properties.each do |list_property |%>
         <% url = list_thing.origin_url_for(list_property['key']) %>
 

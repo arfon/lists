@@ -1,3 +1,18 @@
 // Place all the styles related to the things controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+span.sha {
+  font-size: 0.5em;
+  font-weight: lighter;
+  font-style: italic;
+  color: #636c72 !important;
+
+  a {
+    color: #636c72 !important;
+  }
+}
+
+.card {
+  margin-bottom: 20px;
+}

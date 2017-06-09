@@ -17,6 +17,7 @@ class ThingsController < ApplicationController
     authorize @thing
 
     respond_to do |format|
+      format.html
       format.json { render :json => @thing }
     end
   end
