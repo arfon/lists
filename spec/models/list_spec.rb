@@ -67,6 +67,17 @@ describe List do
     expect(list.property_groups).to contain_exactly("Default", "Orbital Parameters", "Stellar Properties")
   end
 
+  # Property units
+
+  it "should know about the units of properties" do
+    list = create(:list)
+
+    expect(list.property_for('default_name')).to eq({"key"=>"default_name", "name"=>"Name", "units"=>"", "kind"=>"String", "required"=>true, "group"=>"Default"})
+    expect(list.property_units_for('orbital_parameters_planet_mass')).to eq('mjupiter')
+    expect(list.property_units_for('default_name')).to eq('')
+    expect(list.property_units_for('foo')).to eq(nil)
+  end
+  
   it "should know how to create property keys before saving its properties" do
     list = create(:list_without_properties)
     new_property = {

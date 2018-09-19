@@ -29,6 +29,7 @@ describe ThingsController, :type => :controller do
       expect(response).to be_success
       expect(response.status).to eq(200)
       assert_equal hash_from_json(response.body)["data"]["id"], thing.sha
+      assert_equal hash_from_json(response.body)["data"]["attributes"]["properties"]["orbital-parameters-planet-mass"]["units"], "mjupiter"
     end
   end
 
@@ -72,6 +73,7 @@ describe ThingsController, :type => :controller do
       expect(response.status).to eq(200)
       expect(@controller.send(:sanitize_query_fields)).to eq({"default_name" => "Kepler-181 b"})
       assert_equal hash_from_json(response.body)["data"].first["id"], list.things.first.sha
+      assert_equal hash_from_json(response.body)["data"].first["attributes"]["properties"]["orbital-parameters-planet-mass"]["units"], "mjupiter"
     end
 
     it "should know how to filter with ranges" do

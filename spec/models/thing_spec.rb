@@ -10,12 +10,14 @@ describe Thing do
     expect(thing.sha.length).to eq(32)
     expect(thing.available_property_keys.length).to eq(5)
     expect(thing.property_values).to contain_exactly("1.5", "Kepler-181 b")
+    expect(thing.property_unit_for('orbital_parameters_planet_mass')).to eq('mjupiter')
   end
 
   it "should know how to parameterize itself properly" do
     thing = create(:thing)
 
     expect(thing.sha).to eq(thing.to_param)
+    expect(thing.property_unit_for('foo')).to eq(nil)
   end
 
   it "should be impossible to create a Thing without properties" do
