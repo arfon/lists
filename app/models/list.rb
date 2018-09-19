@@ -58,6 +58,18 @@ class List < ApplicationRecord
     true
   end
 
+  def property_for(property_key)
+    properties.select { |p| p['key'] == property_key }.first
+  end
+
+  def property_units_for(property_key)
+    if property = property_for(property_key)
+      return property['units']
+    else
+      return nil
+    end
+  end
+
   # default_name,default_star_name,orbital_parameters_planet_mass,default_ra,default_dec
   def to_csv
     CSV.generate do |csv|

@@ -7,6 +7,10 @@ class Thing < ApplicationRecord
     sha
   end
 
+  def property_unit_for(list_property_key)
+    list.property_units_for(list_property_key)
+  end
+
   def property_value_for(list_property_key)
     if property = properties[list_property_key]
       return property['value']
