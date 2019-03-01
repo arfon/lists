@@ -14,7 +14,7 @@ Each `List` is composed of multiple (currently limited to 10,000) `Things`. Each
 
 ### Creating a list
 
-To create a List you first need to create a Git repository with the metadata that defines the list properties and the Things you want to include in your List. An example of a list for exoplanets is here: https://github.com/arfon/exoplanet_list
+To create a List you first need to create a Git repository with the metadata that defines the list properties and the Things you want to include in your List. An example of a list for brown dwarfs is here: https://github.com/arfon/brown_dwarfs
 
 ### List conventions
 
@@ -32,54 +32,48 @@ YAML is a human-readable markup language. You can read more about the YAML synta
 
 ## A worked example
 
-An example of a list for exoplanets is here: https://github.com/arfon/exoplanet_list.
+An example of a list for brown dwarfs is here: https://github.com/arfon/brown_dwarfs.
 
 The `list.yaml` is defined with a `name`, `description` and an array of `properties` that are essentially available fields to describe the associated `Things` with:
 
-So to describe our list of exoplanet candidates we are describing the following five properties:
+So to describe our list of brown dwarfs we are describing a collection of properties including:
 
-- `Name` - the exoplanet name
-- `Star Name` - the name of the host star
-- `Planet Mass` - the mass of the exoplanet
-- `RA` - the right ascension of the host star/system
-- `Dec` - the declination of the host star/system
+- `Short Name` - the brown dwarf name
+- `Alternative Designation` - an alternative name
+- `Distance` - distance in pc
+- `RA` - the right ascension
+- `Dec` - the declination
 
 The YAML to describe this list is as follows:
 
 ```yaml
-name: "Arfon's Fantastic Exoplanets"
-description: "Arfon's list of exoplanet candidates. Hand-picked just for you."
+name: "Arfon's Fantastic List of Brown Dwarfs"
+description: "Arfon's list of brown dwarfs. Hand-picked just for you."
 properties:
-  - name: "Name"
+  - name: "Short Name"
     kind: "String"
     units: ""
     required: "true"
     group: "Default"
-    key: "default_name"
-  - name: "Star Name"
+    key: "default_short_name"
+  - name: "Alternate Designation"
     kind: "String"
     units: ""
     required: "true"
     group: "Default"
-    key: "default_star_name"
-  - name: "Planet Mass"
+    key: "default_alternate_designation"
+  - name: "Distance"
     kind: "Decimal"
-    units: "mjupiter"
+    units: "pc"
     required: "false"
-    group: "Orbital Parameters"
-    key: "orbital_parameters_planet_mass"
+    group: "Default"
+    key: "default_distance"
   - name: "RA"
     kind: "Decimal"
     units: "degrees"
     required: "true"
     group: "Default"
     key: "default_ra"
-  - name: "Dec"
-    kind: "Decimal"
-    units: "degrees"
-    required: "true"
-    group: "Default"
-    key: "default_dec"
 ```
 
 `properties` in `list.yaml` is a YAML array and each of the `properties` in the array has the following structure:
@@ -101,26 +95,29 @@ The `key` field for a property is used to relate the top-level `properties` defi
 
 **Things**
 
-Things should be nested in the List repository in a folder named `things`. Each `Thing` in your list should have its own file. Below is an example for the exoplanet candidate Kepler 181 b:
+Things should be nested in the List repository in a folder named `things`. Each `Thing` in your list should have its own file. Below is an example for the brown dwarf 1658+1820:
 
 ```yaml
-# Example for `things/kepler-181-b.yaml`
+# Example for `things/1658+1820.yaml`
 
-default_name:
-  value: "Kepler-181 b"
-  origin: "http://arxiv.org/abs/1402.6534"
-default_star_name:
-  value: "Kepler-181"
+default_short_name:
+  value: "1658+1820"
   origin: ""
-orbital_parameters_planet_mass:
-  value: "0.0067"
-  origin: "http://arxiv.org/abs/1402.6534"
+default_alternate_designation:
+  value: "SDSS J16585026+1820006"
+  origin: "https://arxiv.org/abs/1408.3089"
+default_distance:
+  value: ""
+  origin: ""
 default_ra:
-  value: "286.0166667"
-  origin: "http://arxiv.org/abs/1402.6534"
+  value: "254.709737"
+  origin: ""
 default_dec:
-  value: "50.0958333"
-  origin: "http://arxiv.org/abs/1402.6534"
+  value: "18.333275"
+  origin: ""
+default_spectral_types:
+  value: "Optical: L0.0 L0.0"
+  origin: "http://simbad.u-strasbg.fr/simbad/sim-ref?bibcode=2014ApJ...794..143B"
 
 ```
 
@@ -143,7 +140,7 @@ thor lists:load    # Load the target repository into the database
 Clones the target repository to `tmp/repository_name`:
 
 ```
-> thor lists:clone git@github.com:arfon/exoplanet_list.git
+> thor lists:clone git@github.com:arfon/brown_dwarfs.git
 ```
 
 `thor lists:verify`
@@ -151,7 +148,7 @@ Clones the target repository to `tmp/repository_name`:
 Verify the list repository has the correct basic structure:
 
 ```
-> thor lists:verify /Users/arfon/stsci/lists/tmp/exoplanet_list
+> thor lists:verify /Users/arfon/stsci/lists/tmp/brown_dwarfs
 ```
 
 `thor lists:load`
@@ -160,10 +157,10 @@ Load the local repository into the local database. By default doesn't save recor
 
 ```
 # Doesn't save to the DB
-> thor lists:load /Users/arfon/stsci/lists/tmp/exoplanet_list
+> thor lists:load /Users/arfon/stsci/lists/tmp/brown_dwarfs
 
 # Save to DB
-> thor lists:load /Users/arfon/stsci/lists/tmp/exoplanet_list --save=true
+> thor lists:load /Users/arfon/stsci/lists/tmp/brown_dwarfs --save=true
 ```
 
 ## API
@@ -234,34 +231,34 @@ Connection: close
 {  
    "data":[  
       {  
-         "id":"34e1e459c816fc8ad0b8602ac6adfbd9",
+         "id":"3093de1052c36fc07241f920fd0b284c",
          "type":"lists",
          "attributes":{  
-            "name":"Arfon's Fantastic Exoplanets",
-            "description":"Arfon's list of exoplanet candidates. Hand-picked just for you.",
+            "name":"Arfon's Fantastic List of Brown Dwarfs",
+            "description":"Arfon's list of brown dwarfs. Hand-picked just for you.",
             "properties":[  
                {  
-                  "key":"default_name",
+                  "key":"default_short_name",
                   "kind":"String",
-                  "name":"Name",
+                  "name":"Short Name",
                   "group":"Default",
                   "units":"",
                   "required":"true"
                },
                {  
-                  "key":"default_star_name",
+                  "key":"default_alternate_designation",
                   "kind":"String",
-                  "name":"Star Name",
+                  "name":"Alternate Designation",
                   "group":"Default",
                   "units":"",
                   "required":"true"
                },
                {  
-                  "key":"orbital_parameters_planet_mass",
+                  "key":"default_distance",
                   "kind":"Decimal",
-                  "name":"Planet Mass",
-                  "group":"Orbital Parameters",
-                  "units":"mjupiter",
+                  "name":"Distance",
+                  "group":"Default",
+                  "units":"pc",
                   "required":"false"
                },
                {  
@@ -279,6 +276,110 @@ Connection: close
                   "group":"Default",
                   "units":"degrees",
                   "required":"true"
+               },
+               {  
+                  "key":"default_spectral_types",
+                  "kind":"String",
+                  "name":"Spectral Types",
+                  "group":"Default",
+                  "units":"",
+                  "required":"true"
+               },
+               {  
+                  "key":"photometry_sdss_u",
+                  "kind":"decimal",
+                  "name":"SDSS u",
+                  "group":"Photometry",
+                  "units":"",
+                  "required":"false"
+               },
+               {  
+                  "key":"photometry_sdss_g",
+                  "kind":"decimal",
+                  "name":"SDSS g",
+                  "group":"Photometry",
+                  "units":"",
+                  "required":"false"
+               },
+               {  
+                  "key":"photometry_sdss_r",
+                  "kind":"decimal",
+                  "name":"SDSS r",
+                  "group":"Photometry",
+                  "units":"",
+                  "required":"false"
+               },
+               {  
+                  "key":"photometry_sdss_i",
+                  "kind":"decimal",
+                  "name":"SDSS i",
+                  "group":"Photometry",
+                  "units":"",
+                  "required":"false"
+               },
+               {  
+                  "key":"photometry_sdss_z",
+                  "kind":"decimal",
+                  "name":"SDSS z",
+                  "group":"Photometry",
+                  "units":"",
+                  "required":"false"
+               },
+               {  
+                  "key":"photometry_2mass_j",
+                  "kind":"decimal",
+                  "name":"2MASS J",
+                  "group":"Photometry",
+                  "units":"",
+                  "required":"false"
+               },
+               {  
+                  "key":"photometry_2mass_h",
+                  "kind":"decimal",
+                  "name":"2MASS H",
+                  "group":"Photometry",
+                  "units":"",
+                  "required":"false"
+               },
+               {  
+                  "key":"photometry_2mass_ks",
+                  "kind":"decimal",
+                  "name":"2MASS Ks",
+                  "group":"Photometry",
+                  "units":"",
+                  "required":"false"
+               },
+               {  
+                  "key":"photometry_wise_w1",
+                  "kind":"decimal",
+                  "name":"WISE W1",
+                  "group":"Photometry",
+                  "units":"",
+                  "required":"false"
+               },
+               {  
+                  "key":"photometry_wise_w2",
+                  "kind":"decimal",
+                  "name":"WISE W2",
+                  "group":"Photometry",
+                  "units":"",
+                  "required":"false"
+               },
+               {  
+                  "key":"photometry_wise_w3",
+                  "kind":"decimal",
+                  "name":"WISE W3",
+                  "group":"Photometry",
+                  "units":"",
+                  "required":"false"
+               },
+               {  
+                  "key":"photometry_wise_w4",
+                  "kind":"decimal",
+                  "name":"WISE W4",
+                  "group":"Photometry",
+                  "units":"",
+                  "required":"false"
                }
             ]
          },
@@ -286,27 +387,19 @@ Connection: close
             "things":{  
                "data":[  
                   {  
-                     "id":"1c82ecc057c2ccfdde763a1997664700",
+                     "id":"d7d5e7be104e2d828b7c45ce35e8d0f0",
                      "type":"things"
                   },
                   {  
-                     "id":"de562564270ce9135871db63c7d75908",
-                     "type":"things"
-                  },
-                  {  
-                     "id":"efbeee053fd22b8546fe0ee102d43c2a",
-                     "type":"things"
-                  },
-                  {  
-                     "id":"8adb6fafc6734f5d88952aec34b3324d",
+                     "id":"dd28b0ee6b5a3c8e3343ae97d2086d6d",
                      "type":"things"
                   }
                ]
             }
          },
          "links":{  
-            "self":"/api/v1/lists/34e1e459c816fc8ad0b8602ac6adfbd9",
-            "things":"/api/v1/lists/34e1e459c816fc8ad0b8602ac6adfbd9/things"
+            "self":"/api/v1/lists/3093de1052c36fc07241f920fd0b284c",
+            "things":"/api/v1/lists/3093de1052c36fc07241f920fd0b284c/things"
          }
       }
    ],
@@ -332,7 +425,7 @@ https://list.mast.stsci.edu/api/v1/lists/:list_id
 
 ```
 curl -v -H "Accept: application/json" \
-https://list.mast.stsci.edu/api/v1/lists/34e1e459c816fc8ad0b8602ac6adfbd9
+https://list.mast.stsci.edu/api/v1/lists/3093de1052c36fc07241f920fd0b284c
 ```
 
 ```
@@ -343,34 +436,34 @@ Connection: close
 
 {  
    "data":{  
-      "id":"34e1e459c816fc8ad0b8602ac6adfbd9",
+      "id":"3093de1052c36fc07241f920fd0b284c",
       "type":"lists",
       "attributes":{  
-         "name":"Arfon's Fantastic Exoplanets",
-         "description":"Arfon's list of exoplanet candidates. Hand-picked just for you.",
+         "name":"Arfon's Fantastic List of Brown Dwarfs",
+         "description":"Arfon's list of brown dwarfs. Hand-picked just for you.",
          "properties":[  
             {  
-               "key":"default_name",
+               "key":"default_short_name",
                "kind":"String",
-               "name":"Name",
+               "name":"Short Name",
                "group":"Default",
                "units":"",
                "required":"true"
             },
             {  
-               "key":"default_star_name",
+               "key":"default_alternate_designation",
                "kind":"String",
-               "name":"Star Name",
+               "name":"Alternate Designation",
                "group":"Default",
                "units":"",
                "required":"true"
             },
             {  
-               "key":"orbital_parameters_planet_mass",
+               "key":"default_distance",
                "kind":"Decimal",
-               "name":"Planet Mass",
-               "group":"Orbital Parameters",
-               "units":"mjupiter",
+               "name":"Distance",
+               "group":"Default",
+               "units":"pc",
                "required":"false"
             },
             {  
@@ -388,6 +481,110 @@ Connection: close
                "group":"Default",
                "units":"degrees",
                "required":"true"
+            },
+            {  
+               "key":"default_spectral_types",
+               "kind":"String",
+               "name":"Spectral Types",
+               "group":"Default",
+               "units":"",
+               "required":"true"
+            },
+            {  
+               "key":"photometry_sdss_u",
+               "kind":"decimal",
+               "name":"SDSS u",
+               "group":"Photometry",
+               "units":"",
+               "required":"false"
+            },
+            {  
+               "key":"photometry_sdss_g",
+               "kind":"decimal",
+               "name":"SDSS g",
+               "group":"Photometry",
+               "units":"",
+               "required":"false"
+            },
+            {  
+               "key":"photometry_sdss_r",
+               "kind":"decimal",
+               "name":"SDSS r",
+               "group":"Photometry",
+               "units":"",
+               "required":"false"
+            },
+            {  
+               "key":"photometry_sdss_i",
+               "kind":"decimal",
+               "name":"SDSS i",
+               "group":"Photometry",
+               "units":"",
+               "required":"false"
+            },
+            {  
+               "key":"photometry_sdss_z",
+               "kind":"decimal",
+               "name":"SDSS z",
+               "group":"Photometry",
+               "units":"",
+               "required":"false"
+            },
+            {  
+               "key":"photometry_2mass_j",
+               "kind":"decimal",
+               "name":"2MASS J",
+               "group":"Photometry",
+               "units":"",
+               "required":"false"
+            },
+            {  
+               "key":"photometry_2mass_h",
+               "kind":"decimal",
+               "name":"2MASS H",
+               "group":"Photometry",
+               "units":"",
+               "required":"false"
+            },
+            {  
+               "key":"photometry_2mass_ks",
+               "kind":"decimal",
+               "name":"2MASS Ks",
+               "group":"Photometry",
+               "units":"",
+               "required":"false"
+            },
+            {  
+               "key":"photometry_wise_w1",
+               "kind":"decimal",
+               "name":"WISE W1",
+               "group":"Photometry",
+               "units":"",
+               "required":"false"
+            },
+            {  
+               "key":"photometry_wise_w2",
+               "kind":"decimal",
+               "name":"WISE W2",
+               "group":"Photometry",
+               "units":"",
+               "required":"false"
+            },
+            {  
+               "key":"photometry_wise_w3",
+               "kind":"decimal",
+               "name":"WISE W3",
+               "group":"Photometry",
+               "units":"",
+               "required":"false"
+            },
+            {  
+               "key":"photometry_wise_w4",
+               "kind":"decimal",
+               "name":"WISE W4",
+               "group":"Photometry",
+               "units":"",
+               "required":"false"
             }
          ]
       },
@@ -395,27 +592,19 @@ Connection: close
          "things":{  
             "data":[  
                {  
-                  "id":"1c82ecc057c2ccfdde763a1997664700",
+                  "id":"d7d5e7be104e2d828b7c45ce35e8d0f0",
                   "type":"things"
                },
                {  
-                  "id":"de562564270ce9135871db63c7d75908",
-                  "type":"things"
-               },
-               {  
-                  "id":"efbeee053fd22b8546fe0ee102d43c2a",
-                  "type":"things"
-               },
-               {  
-                  "id":"8adb6fafc6734f5d88952aec34b3324d",
+                  "id":"dd28b0ee6b5a3c8e3343ae97d2086d6d",
                   "type":"things"
                }
             ]
          }
       },
       "links":{  
-         "self":"/api/v1/lists/34e1e459c816fc8ad0b8602ac6adfbd9",
-         "things":"/api/v1/lists/34e1e459c816fc8ad0b8602ac6adfbd9/things"
+         "self":"/api/v1/lists/3093de1052c36fc07241f920fd0b284c",
+         "things":"/api/v1/lists/3093de1052c36fc07241f920fd0b284c/things"
       }
    }
 }
@@ -427,7 +616,7 @@ Connection: close
 
 ```
 curl -v -H "Accept: application/json" \
-https://list.mast.stsci.edu/api/v1/lists/34e1e459c816fc8ad0b8602ac6adfbd9/things
+https://list.mast.stsci.edu/api/v1/lists/3093de1052c36fc07241f920fd0b284c/things
 ```
 
 ```
@@ -439,131 +628,207 @@ Connection: close
 {  
    "data":[  
       {  
-         "id":"1c82ecc057c2ccfdde763a1997664700",
+         "id":"d7d5e7be104e2d828b7c45ce35e8d0f0",
          "type":"things",
          "attributes":{  
             "properties":{  
                "default-ra":{  
-                  "value":"286.0166667",
-                  "origin":"http://adsabs.harvard.edu/abs/2016ApJ...822...86M"
+                  "value":"202.953870",
+                  "origin":"",
+                  "units":"degrees"
                },
                "default-dec":{  
-                  "value":"50.0958333",
-                  "origin":"http://adsabs.harvard.edu/abs/2016ApJ...822...86M"
+                  "value":"-1.280556",
+                  "origin":"",
+                  "units":"degrees"
                },
-               "default-name":{  
-                  "value":"Kepler-1156 b",
-                  "origin":"http://adsabs.harvard.edu/abs/2016ApJ...822...86M"
+               "default-distance":{  
+                  "value":"14.86",
+                  "origin":"",
+                  "units":"pc"
                },
-               "default-star-name":{  
-                  "value":"Kepler-1156",
-                  "origin":""
+               "photometry-sdss-g":{  
+                  "value":"25.50",
+                  "origin":"https://www.sdss.org/",
+                  "units":""
                },
-               "orbital-parameters-planet-mass":{  
-                  "value":"0.0067",
-                  "origin":"http://adsabs.harvard.edu/abs/2016ApJ...822...86M"
+               "photometry-sdss-i":{  
+                  "value":"20.67",
+                  "origin":"https://www.sdss.org/",
+                  "units":""
+               },
+               "photometry-sdss-r":{  
+                  "value":"22.87",
+                  "origin":"https://www.sdss.org/",
+                  "units":""
+               },
+               "photometry-sdss-u":{  
+                  "value":"23.72",
+                  "origin":"https://www.sdss.org/",
+                  "units":""
+               },
+               "photometry-sdss-z":{  
+                  "value":"18.08",
+                  "origin":"https://www.sdss.org/",
+                  "units":""
+               },
+               "default-short-name":{  
+                  "value":"1331-0116",
+                  "origin":"",
+                  "units":""
+               },
+               "photometry-2mass-h":{  
+                  "value":"14.47",
+                  "origin":"https://old.ipac.caltech.edu/2mass/",
+                  "units":""
+               },
+               "photometry-2mass-j":{  
+                  "value":"15.46",
+                  "origin":"https://old.ipac.caltech.edu/2mass/",
+                  "units":""
+               },
+               "photometry-wise-w1":{  
+                  "value":"14.08",
+                  "origin":"https://www.nasa.gov/mission_pages/WISE/main/index.html",
+                  "units":""
+               },
+               "photometry-wise-w2":{  
+                  "value":"13.78",
+                  "origin":"https://www.nasa.gov/mission_pages/WISE/main/index.html",
+                  "units":""
+               },
+               "photometry-wise-w3":{  
+                  "value":"11.93",
+                  "origin":"https://www.nasa.gov/mission_pages/WISE/main/index.html",
+                  "units":""
+               },
+               "photometry-wise-w4":{  
+                  "value":"\u003e8.63",
+                  "origin":"https://www.nasa.gov/mission_pages/WISE/main/index.html",
+                  "units":""
+               },
+               "photometry-2mass-ks":{  
+                  "value":"14.07",
+                  "origin":"https://old.ipac.caltech.edu/2mass/",
+                  "units":""
+               },
+               "default-spectral-types":{  
+                  "value":"Optical: L6.0 Infrared: T0.0",
+                  "origin":"http://simbad.u-strasbg.fr/simbad/sim-ref?bibcode=2014AJ....147...34S",
+                  "units":""
+               },
+               "default-alternate-designation":{  
+                  "value":"2MASS J13314894-0116500",
+                  "origin":"https://arxiv.org/abs/1408.3089",
+                  "units":""
                }
             }
          },
          "links":{  
-            "self":"/api/v1/lists/34e1e459c816fc8ad0b8602ac6adfbd9/things/1c82ecc057c2ccfdde763a1997664700",
-            "list":"/api/v1/lists/34e1e459c816fc8ad0b8602ac6adfbd9"
+            "self":"/api/v1/lists/3093de1052c36fc07241f920fd0b284c/things/d7d5e7be104e2d828b7c45ce35e8d0f0",
+            "list":"/api/v1/lists/3093de1052c36fc07241f920fd0b284c"
          }
       },
       {  
-         "id":"de562564270ce9135871db63c7d75908",
+         "id":"dd28b0ee6b5a3c8e3343ae97d2086d6d",
          "type":"things",
          "attributes":{  
             "properties":{  
                "default-ra":{  
-                  "value":"286.0166667",
-                  "origin":"http://arxiv.org/abs/1402.6534"
+                  "value":"254.709737",
+                  "origin":"",
+                  "units":"degrees"
                },
                "default-dec":{  
-                  "value":"50.0958333",
-                  "origin":"http://arxiv.org/abs/1402.6534"
+                  "value":"18.333275",
+                  "origin":"",
+                  "units":"degrees"
                },
-               "default-name":{  
-                  "value":"Kepler-181 b",
-                  "origin":"http://arxiv.org/abs/1402.6534"
+               "default-distance":{  
+                  "value":"",
+                  "origin":"",
+                  "units":"pc"
                },
-               "default-star-name":{  
-                  "value":"Kepler-181",
-                  "origin":""
+               "photometry-sdss-g":{  
+                  "value":"",
+                  "origin":"",
+                  "units":""
                },
-               "orbital-parameters-planet-mass":{  
-                  "value":"0.0067",
-                  "origin":"http://arxiv.org/abs/1402.6534"
+               "photometry-sdss-i":{  
+                  "value":"",
+                  "origin":"",
+                  "units":""
+               },
+               "photometry-sdss-r":{  
+                  "value":"",
+                  "origin":"",
+                  "units":""
+               },
+               "photometry-sdss-u":{  
+                  "value":"",
+                  "origin":"",
+                  "units":""
+               },
+               "photometry-sdss-z":{  
+                  "value":"",
+                  "origin":"",
+                  "units":""
+               },
+               "default-short-name":{  
+                  "value":"1658+1820",
+                  "origin":"",
+                  "units":""
+               },
+               "photometry-2mass-h":{  
+                  "value":"",
+                  "origin":"",
+                  "units":""
+               },
+               "photometry-2mass-j":{  
+                  "value":"",
+                  "origin":"",
+                  "units":""
+               },
+               "photometry-wise-w1":{  
+                  "value":"14.08",
+                  "origin":"https://www.nasa.gov/mission_pages/WISE/main/index.html",
+                  "units":""
+               },
+               "photometry-wise-w2":{  
+                  "value":"13.78",
+                  "origin":"https://www.nasa.gov/mission_pages/WISE/main/index.html",
+                  "units":""
+               },
+               "photometry-wise-w3":{  
+                  "value":"11.93",
+                  "origin":"https://www.nasa.gov/mission_pages/WISE/main/index.html",
+                  "units":""
+               },
+               "photometry-wise-w4":{  
+                  "value":"\u003e8.63",
+                  "origin":"https://www.nasa.gov/mission_pages/WISE/main/index.html",
+                  "units":""
+               },
+               "photometry-2mass-ks":{  
+                  "value":"",
+                  "origin":"",
+                  "units":""
+               },
+               "default-spectral-types":{  
+                  "value":"Optical: L0.0 L0.0",
+                  "origin":"http://simbad.u-strasbg.fr/simbad/sim-ref?bibcode=2014ApJ...794..143B",
+                  "units":""
+               },
+               "default-alternate-designation":{  
+                  "value":"SDSS J16585026+1820006",
+                  "origin":"https://arxiv.org/abs/1408.3089",
+                  "units":""
                }
             }
          },
          "links":{  
-            "self":"/api/v1/lists/34e1e459c816fc8ad0b8602ac6adfbd9/things/de562564270ce9135871db63c7d75908",
-            "list":"/api/v1/lists/34e1e459c816fc8ad0b8602ac6adfbd9"
-         }
-      },
-      {  
-         "id":"efbeee053fd22b8546fe0ee102d43c2a",
-         "type":"things",
-         "attributes":{  
-            "properties":{  
-               "default-ra":{  
-                  "value":"286.0166667",
-                  "origin":"http://arxiv.org/abs/1402.6534"
-               },
-               "default-dec":{  
-                  "value":"50.0958333",
-                  "origin":"http://arxiv.org/abs/1402.6534"
-               },
-               "default-name":{  
-                  "value":"Kepler-181 c",
-                  "origin":"http://arxiv.org/abs/1402.6534"
-               },
-               "default-star-name":{  
-                  "value":"Kepler-181",
-                  "origin":""
-               },
-               "orbital-parameters-planet-mass":{  
-                  "value":"0.0015",
-                  "origin":"http://arxiv.org/abs/1402.6534"
-               }
-            }
-         },
-         "links":{  
-            "self":"/api/v1/lists/34e1e459c816fc8ad0b8602ac6adfbd9/things/efbeee053fd22b8546fe0ee102d43c2a",
-            "list":"/api/v1/lists/34e1e459c816fc8ad0b8602ac6adfbd9"
-         }
-      },
-      {  
-         "id":"8adb6fafc6734f5d88952aec34b3324d",
-         "type":"things",
-         "attributes":{  
-            "properties":{  
-               "default-ra":{  
-                  "value":"286.0166667",
-                  "origin":"http://adsabs.harvard.edu/abs/2006ApJ...646..505B"
-               },
-               "default-dec":{  
-                  "value":"50.0958333",
-                  "origin":"http://adsabs.harvard.edu/abs/2006ApJ...646..505B"
-               },
-               "default-name":{  
-                  "value":"WASP-14 b",
-                  "origin":"http://arxiv.org/abs/1402.6534"
-               },
-               "default-star-name":{  
-                  "value":"WASP-14",
-                  "origin":""
-               },
-               "orbital-parameters-planet-mass":{  
-                  "value":"7.69",
-                  "origin":"http://adsabs.harvard.edu/abs/2006ApJ...646..505B"
-               }
-            }
-         },
-         "links":{  
-            "self":"/api/v1/lists/34e1e459c816fc8ad0b8602ac6adfbd9/things/8adb6fafc6734f5d88952aec34b3324d",
-            "list":"/api/v1/lists/34e1e459c816fc8ad0b8602ac6adfbd9"
+            "self":"/api/v1/lists/3093de1052c36fc07241f920fd0b284c/things/dd28b0ee6b5a3c8e3343ae97d2086d6d",
+            "list":"/api/v1/lists/3093de1052c36fc07241f920fd0b284c"
          }
       }
    ],
@@ -579,7 +844,7 @@ A single `Thing` can also be accessed via a nested `List` URL, for example, for 
 
 ```
 curl -v -H "Accept: application/json" \
-https://list.mast.stsci.edu/api/v1/lists/34e1e459c816fc8ad0b8602ac6adfbd9/things/de562564270ce9135871db63c7d75908
+https://list.mast.stsci.edu/api/v1/lists/3093de1052c36fc07241f920fd0b284c/things/de562564270ce9135871db63c7d75908
 ```
 
 ```
@@ -590,35 +855,105 @@ Connection: close
 
 {  
    "data":{  
-      "id":"de562564270ce9135871db63c7d75908",
+      "id":"d7d5e7be104e2d828b7c45ce35e8d0f0",
       "type":"things",
       "attributes":{  
          "properties":{  
             "default-ra":{  
-               "value":"286.0166667",
-               "origin":"http://arxiv.org/abs/1402.6534"
+               "value":"202.953870",
+               "origin":"",
+               "units":"degrees"
             },
             "default-dec":{  
-               "value":"50.0958333",
-               "origin":"http://arxiv.org/abs/1402.6534"
+               "value":"-1.280556",
+               "origin":"",
+               "units":"degrees"
             },
-            "default-name":{  
-               "value":"Kepler-181 b",
-               "origin":"http://arxiv.org/abs/1402.6534"
+            "default-distance":{  
+               "value":"14.86",
+               "origin":"",
+               "units":"pc"
             },
-            "default-star-name":{  
-               "value":"Kepler-181",
-               "origin":""
+            "photometry-sdss-g":{  
+               "value":"25.50",
+               "origin":"https://www.sdss.org/",
+               "units":""
             },
-            "orbital-parameters-planet-mass":{  
-               "value":"0.0067",
-               "origin":"http://arxiv.org/abs/1402.6534"
+            "photometry-sdss-i":{  
+               "value":"20.67",
+               "origin":"https://www.sdss.org/",
+               "units":""
+            },
+            "photometry-sdss-r":{  
+               "value":"22.87",
+               "origin":"https://www.sdss.org/",
+               "units":""
+            },
+            "photometry-sdss-u":{  
+               "value":"23.72",
+               "origin":"https://www.sdss.org/",
+               "units":""
+            },
+            "photometry-sdss-z":{  
+               "value":"18.08",
+               "origin":"https://www.sdss.org/",
+               "units":""
+            },
+            "default-short-name":{  
+               "value":"1331-0116",
+               "origin":"",
+               "units":""
+            },
+            "photometry-2mass-h":{  
+               "value":"14.47",
+               "origin":"https://old.ipac.caltech.edu/2mass/",
+               "units":""
+            },
+            "photometry-2mass-j":{  
+               "value":"15.46",
+               "origin":"https://old.ipac.caltech.edu/2mass/",
+               "units":""
+            },
+            "photometry-wise-w1":{  
+               "value":"14.08",
+               "origin":"https://www.nasa.gov/mission_pages/WISE/main/index.html",
+               "units":""
+            },
+            "photometry-wise-w2":{  
+               "value":"13.78",
+               "origin":"https://www.nasa.gov/mission_pages/WISE/main/index.html",
+               "units":""
+            },
+            "photometry-wise-w3":{  
+               "value":"11.93",
+               "origin":"https://www.nasa.gov/mission_pages/WISE/main/index.html",
+               "units":""
+            },
+            "photometry-wise-w4":{  
+               "value":"\u003e8.63",
+               "origin":"https://www.nasa.gov/mission_pages/WISE/main/index.html",
+               "units":""
+            },
+            "photometry-2mass-ks":{  
+               "value":"14.07",
+               "origin":"https://old.ipac.caltech.edu/2mass/",
+               "units":""
+            },
+            "default-spectral-types":{  
+               "value":"Optical: L6.0 Infrared: T0.0",
+               "origin":"http://simbad.u-strasbg.fr/simbad/sim-ref?bibcode=2014AJ....147...34S",
+               "units":""
+            },
+            "default-alternate-designation":{  
+               "value":"2MASS J13314894-0116500",
+               "origin":"https://arxiv.org/abs/1408.3089",
+               "units":""
             }
          }
       },
       "links":{  
-         "self":"/api/v1/lists/34e1e459c816fc8ad0b8602ac6adfbd9/things/de562564270ce9135871db63c7d75908",
-         "list":"/api/v1/lists/34e1e459c816fc8ad0b8602ac6adfbd9"
+         "self":"/api/v1/lists/3093de1052c36fc07241f920fd0b284c/things/d7d5e7be104e2d828b7c45ce35e8d0f0",
+         "list":"/api/v1/lists/3093de1052c36fc07241f920fd0b284c"
       }
    }
 }
@@ -639,11 +974,11 @@ The filtering functionality supports three basic filtering options:
 
 Available filter parameters are defined by the parent `List` property keys and can be combined when constructing a query.
 
-For example, to find all `Things` (exoplanets in this case) for the `List` defined in the [worked example above](#a-worked-example), with ID `34e1e459c816fc8ad0b8602ac6adfbd9`, with a RA greater than 20 degrees and a mass less than 10 mJupiter (assuming these are the units of a property):
+For example, to find all `Things` (brown dwarfs in this case) for the `List` defined in the [worked example above](#a-worked-example), with ID `3093de1052c36fc07241f920fd0b284c`, with a RA greater than 20 degrees and a 2MASS J photometry brighter than 15th magnitude (assuming these are the units of a property):
 
 ```
 curl -v -H "Accept: application/json" \
-https://list.mast.stsci.edu/api/v1/lists/34e1e459c816fc8ad0b8602ac6adfbd9/things/filter?default_ra=gte20&orbital_parameters_planet_mass=lte10
+https://list.mast.stsci.edu/api/v1/lists/3093de1052c36fc07241f920fd0b284c/things/filter?default_ra=gte20&2mass_j=lte15
 ```
 
 ### Viewing a User and their public Lists
@@ -652,7 +987,7 @@ If you know a User's ID then you can view the user and access their public lists
 
 ```
 curl -v -H "Accept: application/json" \
-https://list.mast.stsci.edu/api/v1/users/:user_id
+https://list.mast.stsci.edu/api/v1/users/57f78b082cda2952e59884e644eebbb6
 ```
 
 ```
@@ -660,43 +995,42 @@ HTTP/1.1 200 OK
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
 Connection: close
-
 {  
    "data":{  
-      "id":"a8d4372e6481a445b07fd99f1701b240",
+      "id":"57f78b082cda2952e59884e644eebbb6",
       "type":"users",
       "attributes":{  
          "name":"Arfon Smith",
          "lists":[  
             {  
-               "id":2,
-               "name":"Arfon's Fantastic Exoplanets",
-               "sha":"34e1e459c816fc8ad0b8602ac6adfbd9",
-               "description":"Arfon's list of exoplanet candidates. Hand-picked just for you.",
+               "id":1,
+               "name":"Arfon's Fantastic List of Brown Dwarfs",
+               "sha":"3093de1052c36fc07241f920fd0b284c",
+               "description":"Arfon's list of brown dwarfs. Hand-picked just for you.",
                "doi":null,
                "properties":[  
                   {  
-                     "key":"default_name",
+                     "key":"default_short_name",
                      "kind":"String",
-                     "name":"Name",
+                     "name":"Short Name",
                      "group":"Default",
                      "units":"",
                      "required":"true"
                   },
                   {  
-                     "key":"default_star_name",
+                     "key":"default_alternate_designation",
                      "kind":"String",
-                     "name":"Star Name",
+                     "name":"Alternate Designation",
                      "group":"Default",
                      "units":"",
                      "required":"true"
                   },
                   {  
-                     "key":"orbital_parameters_planet_mass",
+                     "key":"default_distance",
                      "kind":"Decimal",
-                     "name":"Planet Mass",
-                     "group":"Orbital Parameters",
-                     "units":"mjupiter",
+                     "name":"Distance",
+                     "group":"Default",
+                     "units":"pc",
                      "required":"false"
                   },
                   {  
@@ -714,12 +1048,116 @@ Connection: close
                      "group":"Default",
                      "units":"degrees",
                      "required":"true"
+                  },
+                  {  
+                     "key":"default_spectral_types",
+                     "kind":"String",
+                     "name":"Spectral Types",
+                     "group":"Default",
+                     "units":"",
+                     "required":"true"
+                  },
+                  {  
+                     "key":"photometry_sdss_u",
+                     "kind":"decimal",
+                     "name":"SDSS u",
+                     "group":"Photometry",
+                     "units":"",
+                     "required":"false"
+                  },
+                  {  
+                     "key":"photometry_sdss_g",
+                     "kind":"decimal",
+                     "name":"SDSS g",
+                     "group":"Photometry",
+                     "units":"",
+                     "required":"false"
+                  },
+                  {  
+                     "key":"photometry_sdss_r",
+                     "kind":"decimal",
+                     "name":"SDSS r",
+                     "group":"Photometry",
+                     "units":"",
+                     "required":"false"
+                  },
+                  {  
+                     "key":"photometry_sdss_i",
+                     "kind":"decimal",
+                     "name":"SDSS i",
+                     "group":"Photometry",
+                     "units":"",
+                     "required":"false"
+                  },
+                  {  
+                     "key":"photometry_sdss_z",
+                     "kind":"decimal",
+                     "name":"SDSS z",
+                     "group":"Photometry",
+                     "units":"",
+                     "required":"false"
+                  },
+                  {  
+                     "key":"photometry_2mass_j",
+                     "kind":"decimal",
+                     "name":"2MASS J",
+                     "group":"Photometry",
+                     "units":"",
+                     "required":"false"
+                  },
+                  {  
+                     "key":"photometry_2mass_h",
+                     "kind":"decimal",
+                     "name":"2MASS H",
+                     "group":"Photometry",
+                     "units":"",
+                     "required":"false"
+                  },
+                  {  
+                     "key":"photometry_2mass_ks",
+                     "kind":"decimal",
+                     "name":"2MASS Ks",
+                     "group":"Photometry",
+                     "units":"",
+                     "required":"false"
+                  },
+                  {  
+                     "key":"photometry_wise_w1",
+                     "kind":"decimal",
+                     "name":"WISE W1",
+                     "group":"Photometry",
+                     "units":"",
+                     "required":"false"
+                  },
+                  {  
+                     "key":"photometry_wise_w2",
+                     "kind":"decimal",
+                     "name":"WISE W2",
+                     "group":"Photometry",
+                     "units":"",
+                     "required":"false"
+                  },
+                  {  
+                     "key":"photometry_wise_w3",
+                     "kind":"decimal",
+                     "name":"WISE W3",
+                     "group":"Photometry",
+                     "units":"",
+                     "required":"false"
+                  },
+                  {  
+                     "key":"photometry_wise_w4",
+                     "kind":"decimal",
+                     "name":"WISE W4",
+                     "group":"Photometry",
+                     "units":"",
+                     "required":"false"
                   }
                ],
                "user_id":1,
                "visible":true,
-               "created_at":"2017-05-25T22:02:31.042Z",
-               "updated_at":"2017-05-25T22:45:29.759Z"
+               "created_at":"2019-03-01T15:34:07.949Z",
+               "updated_at":"2019-03-01T15:34:39.406Z"
             }
          ]
       },
@@ -727,14 +1165,14 @@ Connection: close
          "lists":{  
             "data":[  
                {  
-                  "id":"34e1e459c816fc8ad0b8602ac6adfbd9",
+                  "id":"3093de1052c36fc07241f920fd0b284c",
                   "type":"lists"
                }
             ]
          }
       },
       "links":{  
-         "self":"/api/v1/users/a8d4372e6481a445b07fd99f1701b240"
+         "self":"/api/v1/users/57f78b082cda2952e59884e644eebbb6"
       }
    }
 }
@@ -745,10 +1183,6 @@ Note that if a `User` has more than 30 public lists then you'll need to paginate
 ```
 https://list.mast.stsci.edu/api/v1/users/:user_id&page=2
 ```
-
-
-
-
 
 ---------------------------------------
 <sup>\*</sup>Formerly known as Listicles
